@@ -250,7 +250,7 @@ components:
           type: string
           maximum: 13
           description: Weighting area (grouping of census sectors) according to IBGE 2010
-        Code:
+        townshipCode:
           type: string
           maximum: 9
           description: Township code according to IBGE
@@ -317,7 +317,7 @@ components:
           type: string
           maximum: 13
           description: Weighting area (grouping of census sectors) according to IBGE 2010
-        Code:
+        townshipCode:
           type: string
           maximum: 9
           description: Township code according to IBGE
