@@ -12,7 +12,7 @@ CREATE TABLE market (
    region_8 VARCHAR ( 7 ) NOT NULL,
    name VARCHAR ( 30 ) NOT NULL,
    registry VARCHAR ( 6 ) UNIQUE NOT NULL,
-   public_place VARCHAR ( 34 ) NOT NULL,
+   street VARCHAR ( 34 ) NOT NULL,
    number VARCHAR ( 15 ),
    district VARCHAR ( 20 ),
    reference VARCHAR ( 30 )
