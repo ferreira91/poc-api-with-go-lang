@@ -1,0 +1,380 @@
+openapi: 3.0.3
+info:
+  title: Swagger Market
+  description: 'Market server'
+  version: 1.0.0
+servers:
+  - url: http://localhost:1323
+tags:
+  - name: market
+    description: Control and location of street markets in the city of São Paulo
+paths:
+  /markets:
+    post:
+      tags:
+        - market
+      summary: Add a new market 
+      description: Add a new market 
+      operationId: addMarket
+      requestBody:
+        description: Create a new market
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createMarketRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful operation
+          headers:
+            Location:
+              description: Location to access item created
+              schema:
+                type: string
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+    get:
+      tags:
+        - market
+      summary: Find markets
+      description: Find markets
+      operationId: getMarkets
+      parameters:
+        - name: township
+          in: query
+          description: Township name
+          required: false
+          schema:
+            type: string
+        - name: region5
+          in: query
+          description: Region according to the division of the municipality into 5 areas
+          required: false
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Denominação da market livre atribuída pela Supervisão de Abastecimento
+          required: false
+          schema:
+            type: string
+        - name: district
+          in: query
+          description: Free market location district
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/getMarketResponse'
+        '400':
+          description: Malformed request syntax
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+    delete:
+      tags:
+        - market
+      summary: Remove a market by registration
+      description: Remove a market by registration
+      operationId: deleteMarket
+      parameters:
+        - name: registry
+          in: query
+          description: Free market registration number at PMSP
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Successful operation
+        '400':
+          description: Malformed request syntax
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+  /markets/{id}:
+    get:
+      tags:
+        - market
+      summary: Find market by id
+      description: Find market by id
+      operationId: findMarketById
+      parameters:
+        - name: id
+          in: path
+          description: Identification number of the establishment georeferenced by SMDU/Deinfo
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getMarketResponse'          
+        '400':
+          description: Malformed request syntax
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+    patch:
+      tags: 
+        - market
+      summary: Update fields from an existing market
+      description: Update fields from an existing market
+      operationId: updatePartialMarket
+      parameters:
+        - name: id
+          in: path
+          description: Identification number of the establishment georeferenced by SMDU/Deinfo
+          required: true
+          schema:
+            type: integer
+            format: int6
+      requestBody:
+        description: Update partial market
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updatePartialMarketRequest"
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getMarketResponse'          
+        '400':
+          description: Malformed request syntax
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorResponse'
+components:
+  schemas:
+    createMarketRequest:
+      required:
+        - longitude
+        - latitude
+        - censusSector
+        - weightingArea
+        - townshipCode
+        - township
+        - subprefectureCode
+        - subprefecture
+        - region5
+        - region8
+        - name
+        - registry
+        - street
+        - district
+      type: object
+      properties:
+        longitude:
+          type: string
+          maximum: 10
+          description: Longitude of the location of the establishment in the territory of the municipality, according to MDC
+        latitude:
+          type: string
+          maximum: 10
+          description: Latitude of the location of the establishment in the territory of the municipality, according to MDC
+        censusSector:
+          type: string
+          maximum: 15
+          description: Census sector according to IBGE
+        weightingArea:
+          type: string
+          maximum: 13
+          description: Weighting area (grouping of census sectors) according to IBGE 2010
+        Code:
+          type: string
+          maximum: 9
+          description: Township code according to IBGE
+        township:
+          type: string
+          maximum: 18
+          description: Township name
+        subprefectureCode:
+          type: string
+          maximum: 2
+          description: Code of each of the 31 subprefectures (2003 to 2012)
+        subprefecture:
+          type: string
+          maximum: 25
+          description: Subprefecture name (31 from 2003 to 2012)
+        region5:
+          type: string
+          maximum: 6   
+          description: Region according to the division of the municipality into 5 areas
+        region8:
+          type: string
+          maximum: 7  
+          description: Region according to the division of the Municipality into 8 areas
+        name:
+          type: string
+          maximum: 30  
+          description: Denomination of the open market attributed by the supply supervision
+        registry:
+          type: string
+          maximum: 6          
+          description: Free market registration number at PMSP
+        street:
+          type: string
+          maximum: 34 
+          description: Name of street where the free market is located
+        number:
+          type: string
+          maximum: 5  
+          description: A street number where a fair is located
+        district:
+          type: string
+          maximum: 20            
+          description: Free market location district
+        reference:
+          type: string
+          maximum: 24            
+          description: Reference point of the free market location
+    updatePartialMarketRequest:
+      type: object
+      properties:
+        longitude:
+          type: string
+          maximum: 10
+          description: Longitude of the location of the establishment in the territory of the municipality, according to MDC
+        latitude:
+          type: string
+          maximum: 10
+          description: Latitude of the location of the establishment in the territory of the municipality, according to MDC
+        censusSector:
+          type: string
+          maximum: 15
+          description: Census sector according to IBGE
+        weightingArea:
+          type: string
+          maximum: 13
+          description: Weighting area (grouping of census sectors) according to IBGE 2010
+        Code:
+          type: string
+          maximum: 9
+          description: Township code according to IBGE
+        township:
+          type: string
+          maximum: 18
+          description: Township name
+        subprefectureCode:
+          type: string
+          maximum: 2
+          description: Code of each of the 31 subprefectures (2003 to 2012)
+        subprefecture:
+          type: string
+          maximum: 25
+          description: Subprefecture name (31 from 2003 to 2012)
+        region5:
+          type: string
+          maximum: 6   
+          description: Region according to the division of the municipality into 5 areas
+        region8:
+          type: string
+          maximum: 7  
+          description: Region according to the division of the Municipality into 8 areas
+        name:
+          type: string
+          maximum: 30  
+          description: Denomination of the open market attributed by the supply supervision
+        street:
+          type: string
+          maximum: 34 
+          description: Name of street where the free market is located
+        number:
+          type: string
+          maximum: 5  
+          description: A street number where a fair is located
+        district:
+          type: string
+          maximum: 20            
+          description: Free market location district
+        reference:
+          type: string
+          maximum: 24            
+          description: Reference point of the free market location
+    getMarketResponse:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              maximum: 8
+              description: Identification number of the establishment georeferenced by SMDU/Deinfo
+        - $ref: '#/components/schemas/createMarketRequest' 
+    errorResponse:
+      required:
+        - message
+      type: object
+      properties:
+        message:
+          type: string
+          description: Message error
