@@ -224,8 +224,8 @@ components:
         - weightingArea
         - townshipCode
         - township
-        - subprefectureCode
-        - subprefecture
+        - subPrefectureCode
+        - subPrefecture
         - region5
         - region8
         - name
@@ -258,14 +258,14 @@ components:
           type: string
           maximum: 18
           description: Township name
-        subprefectureCode:
+        subPrefectureCode:
           type: string
           maximum: 2
-          description: Code of each of the 31 subprefectures (2003 to 2012)
-        subprefecture:
+          description: Code of each of the 31 sub prefectures (2003 to 2012)
+        subPrefecture:
           type: string
           maximum: 25
-          description: Subprefecture name (31 from 2003 to 2012)
+          description: sub Prefecture name (31 from 2003 to 2012)
         region5:
           type: string
           maximum: 6   
@@ -325,14 +325,14 @@ components:
           type: string
           maximum: 18
           description: Township name
-        subprefectureCode:
+        subPrefectureCode:
           type: string
           maximum: 2
-          description: Code of each of the 31 subprefectures (2003 to 2012)
-        subprefecture:
+          description: Code of each of the 31 sub prefectures (2003 to 2012)
+        subPrefecture:
           type: string
           maximum: 25
-          description: Subprefecture name (31 from 2003 to 2012)
+          description: sub Prefecture name (31 from 2003 to 2012)
         region5:
           type: string
           maximum: 6   
