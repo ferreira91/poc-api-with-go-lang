@@ -35,3 +35,7 @@ func (m *Market) IsValid() (bool, error) {
 	}
 	return true, nil
 }
+
+func NewMarket() *Market  {
+	return &Market{}
+}
