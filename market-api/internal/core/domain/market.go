@@ -9,7 +9,7 @@ type IMarket interface {
 }
 
 type Market struct {
-	ID                string `valid:"optional"`
+	ID                string
 	Longitude         string `valid:"required"`
 	Latitude          string `valid:"required"`
 	CensusSector      string `valid:"required"`
@@ -23,9 +23,9 @@ type Market struct {
 	Name              string `valid:"required"`
 	Registry          string `valid:"required"`
 	Street            string `valid:"required"`
-	Number            string `valid:"optional"`
+	Number            string
 	District          string `json:"required"`
-	Reference         string `valid:"optional"`
+	Reference         string
 }
 
 func (m *Market) IsValid() (bool, error) {
