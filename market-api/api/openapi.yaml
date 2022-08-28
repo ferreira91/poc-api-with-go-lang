@@ -13,15 +13,15 @@ paths:
     post:
       tags:
         - market
-      summary: Add a new market 
-      description: Add a new market 
+      summary: Add a new market
+      description: Add a new market
       operationId: addMarket
       requestBody:
         description: Create a new market
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createMarketRequest'
+              $ref: '#/components/schemas/marketRequest'
         required: true
       responses:
         '201':
@@ -82,7 +82,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/getMarketResponse'
+                  $ref: '#/components/schemas/marketResponse'
         '400':
           description: Malformed request syntax
           content:
@@ -150,7 +150,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getMarketResponse'          
+                $ref: '#/components/schemas/marketResponse'
         '400':
           description: Malformed request syntax
           content:
@@ -169,12 +169,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/errorResponse'
-    patch:
-      tags: 
+    put:
+      tags:
         - market
-      summary: Update fields from an existing market
-      description: Update fields from an existing market
-      operationId: updatePartialMarket
+      summary: Update an existing market
+      description: Update an existing market
+      operationId: updateMarket
       parameters:
         - name: id
           in: path
@@ -188,14 +188,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/updatePartialMarketRequest"
+              $ref: "#/components/schemas/marketRequest"
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getMarketResponse'          
+                $ref: '#/components/schemas/marketResponse'
         '400':
           description: Malformed request syntax
           content:
@@ -216,7 +216,7 @@ paths:
                 $ref: '#/components/schemas/errorResponse'
 components:
   schemas:
-    createMarketRequest:
+    marketRequest:
       required:
         - longitude
         - latitude
@@ -268,100 +268,37 @@ components:
           description: sub Prefecture name (31 from 2003 to 2012)
         region5:
           type: string
-          maximum: 6   
+          maximum: 6
           description: Region according to the division of the municipality into 5 areas
         region8:
           type: string
-          maximum: 7  
+          maximum: 7
           description: Region according to the division of the Municipality into 8 areas
         name:
           type: string
-          maximum: 30  
+          maximum: 30
           description: Denomination of the open market attributed by the supply supervision
         registry:
           type: string
-          maximum: 6          
+          maximum: 6
           description: Free market registration number at PMSP
         street:
           type: string
-          maximum: 34 
+          maximum: 34
           description: Name of street where the free market is located
         number:
           type: string
-          maximum: 5  
+          maximum: 5
           description: A street number where a fair is located
         district:
           type: string
-          maximum: 20            
+          maximum: 20
           description: Free market location district
         reference:
           type: string
-          maximum: 24            
+          maximum: 24
           description: Reference point of the free market location
-    updatePartialMarketRequest:
-      type: object
-      properties:
-        longitude:
-          type: string
-          maximum: 10
-          description: Longitude of the location of the establishment in the territory of the municipality, according to MDC
-        latitude:
-          type: string
-          maximum: 10
-          description: Latitude of the location of the establishment in the territory of the municipality, according to MDC
-        censusSector:
-          type: string
-          maximum: 15
-          description: Census sector according to IBGE
-        weightingArea:
-          type: string
-          maximum: 13
-          description: Weighting area (grouping of census sectors) according to IBGE 2010
-        townshipCode:
-          type: string
-          maximum: 9
-          description: Township code according to IBGE
-        township:
-          type: string
-          maximum: 18
-          description: Township name
-        subPrefectureCode:
-          type: string
-          maximum: 2
-          description: Code of each of the 31 sub prefectures (2003 to 2012)
-        subPrefecture:
-          type: string
-          maximum: 25
-          description: sub Prefecture name (31 from 2003 to 2012)
-        region5:
-          type: string
-          maximum: 6   
-          description: Region according to the division of the municipality into 5 areas
-        region8:
-          type: string
-          maximum: 7  
-          description: Region according to the division of the Municipality into 8 areas
-        name:
-          type: string
-          maximum: 30  
-          description: Denomination of the open market attributed by the supply supervision
-        street:
-          type: string
-          maximum: 34 
-          description: Name of street where the free market is located
-        number:
-          type: string
-          maximum: 5  
-          description: A street number where a fair is located
-        district:
-          type: string
-          maximum: 20            
-          description: Free market location district
-        reference:
-          type: string
-          maximum: 24            
-          description: Reference point of the free market location
-    getMarketResponse:
+    marketResponse:
       allOf:
         - type: object
           properties:
@@ -369,7 +306,7 @@ components:
               type: string
               maximum: 8
               description: Identification number of the establishment georeferenced by SMDU/Deinfo
-        - $ref: '#/components/schemas/createMarketRequest' 
+        - $ref: '#/components/schemas/marketRequest'
     errorResponse:
       required:
         - message
