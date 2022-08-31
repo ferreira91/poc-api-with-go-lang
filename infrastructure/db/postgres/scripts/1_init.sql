@@ -1,5 +1,5 @@
 CREATE TABLE market (
-   id serial PRIMARY KEY,
+   id SERIAL PRIMARY KEY,
    longitude VARCHAR ( 10 ) NOT NULL,
    latitude VARCHAR ( 10 ) NOT NULL,
    census_sector VARCHAR ( 15 ) NOT NULL,
