@@ -6,7 +6,7 @@ import (
 
 type IMarket interface {
 	IsValid() (bool, error)
-	GetID() string
+	GetID() int
 	GetLongitude() string
 	GetLatitude() string
 	GetCensusSector() string
