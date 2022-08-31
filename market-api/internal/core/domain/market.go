@@ -6,7 +6,7 @@ import (
 
 type IMarket interface {
 	IsValid() (bool, error)
-	GetID() int
+	GetID() int64
 	GetLongitude() string
 	GetLatitude() string
 	GetCensusSector() string
@@ -37,13 +37,13 @@ type ICreateMarketService interface {
 }
 
 type IFindMarketService interface {
-	GetByID(id int) (IMarket, error)
+	GetByID(id int64) (IMarket, error)
 	GetAll() ([]IMarket, error)
 	Get(township string, region5 string, name string, district string) ([]IMarket, error)
 }
 
 type IUpdateMarketService interface {
-	Update(id int, market IMarket) (IMarket, error)
+	Update(id int64, market IMarket) (IMarket, error)
 }
 
 type IDeleteMarketService interface {
@@ -51,19 +51,19 @@ type IDeleteMarketService interface {
 }
 
 type IMarketReaderPersistence interface {
-	FindByID(id int) (IMarket, error)
+	FindByID(id int64) (IMarket, error)
 	FindAll() ([]IMarket, error)
 	Find(query map[string]string) ([]IMarket, error)
 }
 
 type IMarketWriterPersistence interface {
-	Save(market IMarket) (IMarket, error)
-	Update(id int, market IMarket) (IMarket, error)
+	Save(market IMarket) (int64, error)
+	Update(id int64, market IMarket) (IMarket, error)
 	DeleteByRegistry(registry string) (int64, error)
 }
 
 type Market struct {
-	ID                int
+	ID                int64
 	Longitude         string `valid:"required"`
 	Latitude          string `valid:"required"`
 	CensusSector      string `valid:"required"`
@@ -90,7 +90,7 @@ func (m *Market) IsValid() (bool, error) {
 	return true, nil
 }
 
-func (m *Market) GetID() int {
+func (m *Market) GetID() int64 {
 	return m.ID
 }
 

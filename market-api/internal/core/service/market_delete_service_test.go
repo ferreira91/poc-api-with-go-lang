@@ -11,8 +11,9 @@ func TestMarketDeleteService_DeleteByRegistry(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
+	var rowsUpdated int64 = 1
 	persistenceMock := mock_domain.NewMockIMarketWriterPersistence(ctrl)
-	persistenceMock.EXPECT().DeleteByRegistry(gomock.Any()).Return(int64(1), nil).AnyTimes()
+	persistenceMock.EXPECT().DeleteByRegistry(gomock.Any()).Return(rowsUpdated, nil).AnyTimes()
 
 	service := MarketDeleteService{
 		Persistence: persistenceMock,

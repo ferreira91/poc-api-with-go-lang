@@ -6,7 +6,7 @@ type MarketUpdateService struct {
 	Persistence domain.IMarketWriterPersistence
 }
 
-func (s *MarketUpdateService) Update(id int, market domain.IMarket) (domain.IMarket, error) {
+func (s *MarketUpdateService) Update(id int64, market domain.IMarket) (domain.IMarket, error) {
 	_, err := market.IsValid()
 	if err != nil {
 		return &domain.Market{}, err

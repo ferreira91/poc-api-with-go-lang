@@ -5,6 +5,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"market-api/internal/core/domain"
 	mock_domain "market-api/test"
+
 	"testing"
 )
 
@@ -12,9 +13,9 @@ func TestCreateMarketService_Create(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	marketMock := mock_domain.NewMockIMarket(ctrl)
+	var id int64 = 1
 	persistenceMock := mock_domain.NewMockIMarketWriterPersistence(ctrl)
-	persistenceMock.EXPECT().Save(gomock.Any()).Return(marketMock, nil).AnyTimes()
+	persistenceMock.EXPECT().Save(gomock.Any()).Return(id, nil).AnyTimes()
 
 	service := MarketCreateService{
 		Persistence: persistenceMock,
@@ -40,5 +41,5 @@ func TestCreateMarketService_Create(t *testing.T) {
 
 	result, err := service.Create(market)
 	require.Nil(t, err)
-	require.Equal(t, marketMock, result)
+	require.Equal(t, id, result)
 }

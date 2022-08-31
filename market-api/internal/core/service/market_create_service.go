@@ -7,14 +7,14 @@ type MarketCreateService struct {
 	Persistence domain.IMarketWriterPersistence
 }
 
-func (s *MarketCreateService) Create(market domain.IMarket) (domain.IMarket, error) {
+func (s *MarketCreateService) Create(market domain.IMarket) (int64, error) {
 	_, err := market.IsValid()
 	if err != nil {
-		return &domain.Market{}, err
+		return 0, err
 	}
 	result, err := s.Persistence.Save(market)
 	if err != nil {
-		return &domain.Market{}, err
+		return 0, err
 	}
 	return result, nil
 }
