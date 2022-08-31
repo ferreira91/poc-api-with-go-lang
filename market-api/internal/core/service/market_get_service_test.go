@@ -5,6 +5,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"market-api/internal/core/domain"
 	mock_domain "market-api/test"
+
 	"testing"
 )
 
@@ -20,7 +21,7 @@ func TestMarketFindService_GetById(t *testing.T) {
 		Persistence: persistenceMock,
 	}
 
-	result, err := service.GetById("123")
+	result, err := service.GetById(123)
 	require.Nil(t, err)
 	require.Equal(t, marketMock, result)
 }

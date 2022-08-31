@@ -6,7 +6,7 @@ type MarketFindService struct {
 	Persistence domain.IMarketReaderPersistence
 }
 
-func (s *MarketFindService) GetById(id string) (domain.IMarket, error) {
+func (s *MarketFindService) GetById(id int) (domain.IMarket, error) {
 	result, err := s.Persistence.FindByID(id)
 	if err != nil {
 		return nil, err
@@ -25,16 +25,16 @@ func (s *MarketFindService) GetAll() ([]domain.IMarket, error) {
 func (s *MarketFindService) Get(township string, region5 string, name string, district string) ([]domain.IMarket, error) {
 	query := make(map[string]string)
 	if township != "" {
-		query["township"] = township
+		query["Township"] = township
 	}
 	if region5 != "" {
-		query["region_5"] = region5
+		query["Region5"] = region5
 	}
 	if name != "" {
-		query["name"] = name
+		query["Name"] = name
 	}
 	if district != "" {
-		query["district"] = district
+		query["District"] = district
 	}
 	result, err := s.Persistence.Find(query)
 	if err != nil {

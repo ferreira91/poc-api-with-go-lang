@@ -38,7 +38,7 @@ func TestMarketUpdateService_Update(t *testing.T) {
 	market.District = "district"
 	market.Reference = "reference"
 
-	result, err := service.Update("123", market)
+	result, err := service.Update(123, market)
 	require.Nil(t, err)
 	require.Equal(t, marketMock, result)
 }
