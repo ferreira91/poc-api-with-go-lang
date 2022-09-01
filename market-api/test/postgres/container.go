@@ -11,8 +11,8 @@ import (
 )
 
 func SetUp(dbName string) (*gnomock.Container, *sql.DB, error) {
-	var user = "test"
-	var pass = "test"
+	const user = "test"
+	const pass = "test"
 
 	_, path, _, ok := runtime.Caller(0)
 	if !ok {
