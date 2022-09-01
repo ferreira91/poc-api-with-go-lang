@@ -6,6 +6,10 @@ type MarketFindService struct {
 	Persistence domain.IMarketReaderPersistence
 }
 
+func NewMarketFindService(persistence domain.IMarketReaderPersistence) *MarketFindService {
+	return &MarketFindService{Persistence: persistence}
+}
+
 func (s *MarketFindService) GetById(id int64) (domain.IMarket, error) {
 	result, err := s.Persistence.FindByID(id)
 	if err != nil {
