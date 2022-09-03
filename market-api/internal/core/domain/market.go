@@ -26,28 +26,17 @@ type IMarket interface {
 }
 
 type IMarketService interface {
-	ICreateMarketService
-	IFindMarketService
-	IUpdateMarketService
-	IDeleteMarketService
-}
-
-type ICreateMarketService interface {
-	Create(market IMarket) (IMarket, error)
-}
-
-type IFindMarketService interface {
+	Create(market IMarket) (int64, error)
 	GetByID(id int64) (IMarket, error)
 	GetAll() ([]IMarket, error)
 	Get(township string, region5 string, name string, district string) ([]IMarket, error)
-}
-
-type IUpdateMarketService interface {
 	Update(id int64, market IMarket) (IMarket, error)
+	DeleteByRegistry(registry string) error
 }
 
-type IDeleteMarketService interface {
-	DeleteByRegistry(registry string) error
+type IMarketPersistence interface {
+	IMarketReaderPersistence
+	IMarketWriterPersistence
 }
 
 type IMarketReaderPersistence interface {
