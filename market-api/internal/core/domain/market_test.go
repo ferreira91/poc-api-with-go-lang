@@ -7,7 +7,7 @@ import (
 
 func TestMarket_IsValid(t *testing.T) {
 	market := Market{}
-	market.ID = 1234567
+	market.ID = "1234567"
 	market.Longitude = "-1111111"
 	market.Latitude = "-9999999"
 	market.CensusSector = "CensusSector"
@@ -27,7 +27,7 @@ func TestMarket_IsValid(t *testing.T) {
 	_, err := market.IsValid()
 	require.Nil(t, err)
 
-	market.ID = 0
+	market.ID = ""
 	market.Number = ""
 	market.Reference = ""
 	_, err = market.IsValid()

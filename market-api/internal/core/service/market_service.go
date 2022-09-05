@@ -6,23 +6,19 @@ type MarketService struct {
 	Persistence domain.IMarketPersistence
 }
 
-func NewMarketService(persistence domain.IMarketPersistence) *MarketService {
-	return &MarketService{Persistence: persistence}
-}
-
-func (s *MarketService) Create(market domain.IMarket) (int64, error) {
+func (s *MarketService) Create(market domain.IMarket) (string, error) {
 	_, err := market.IsValid()
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 	result, err := s.Persistence.Save(market)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 	return result, nil
 }
 
-func (s *MarketService) GetByID(id int64) (domain.IMarket, error) {
+func (s *MarketService) GetByID(id string) (domain.IMarket, error) {
 	result, err := s.Persistence.FindByID(id)
 	if err != nil {
 		return nil, err
@@ -59,7 +55,7 @@ func (s *MarketService) Get(township string, region5 string, name string, distri
 	return result, nil
 }
 
-func (s *MarketService) Update(id int64, market domain.IMarket) (domain.IMarket, error) {
+func (s *MarketService) Update(id string, market domain.IMarket) (domain.IMarket, error) {
 	_, err := market.IsValid()
 	if err != nil {
 		return &domain.Market{}, err
@@ -72,7 +68,7 @@ func (s *MarketService) Update(id int64, market domain.IMarket) (domain.IMarket,
 }
 
 func (s *MarketService) DeleteByRegistry(registry string) error {
-	_, err := s.Persistence.DeleteByRegistry(registry)
+	err := s.Persistence.DeleteByRegistry(registry)
 	if err != nil {
 		return err
 	}

@@ -63,10 +63,10 @@ func (mr *MockIMarketMockRecorder) GetDistrict() *gomock.Call {
 }
 
 // GetID mocks base method.
-func (m *MockIMarket) GetID() int64 {
+func (m *MockIMarket) GetID() string {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetID")
-	ret0, _ := ret[0].(int64)
+	ret0, _ := ret[0].(string)
 	return ret0
 }
 
@@ -311,10 +311,10 @@ func (m *MockIMarketService) EXPECT() *MockIMarketServiceMockRecorder {
 }
 
 // Create mocks base method.
-func (m *MockIMarketService) Create(market domain.IMarket) (int64, error) {
+func (m *MockIMarketService) Create(market domain.IMarket) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", market)
-	ret0, _ := ret[0].(int64)
+	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -370,7 +370,7 @@ func (mr *MockIMarketServiceMockRecorder) GetAll() *gomock.Call {
 }
 
 // GetByID mocks base method.
-func (m *MockIMarketService) GetByID(id int64) (domain.IMarket, error) {
+func (m *MockIMarketService) GetByID(id string) (domain.IMarket, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetByID", id)
 	ret0, _ := ret[0].(domain.IMarket)
@@ -385,7 +385,7 @@ func (mr *MockIMarketServiceMockRecorder) GetByID(id interface{}) *gomock.Call {
 }
 
 // Update mocks base method.
-func (m *MockIMarketService) Update(id int64, market domain.IMarket) (domain.IMarket, error) {
+func (m *MockIMarketService) Update(id string, market domain.IMarket) (domain.IMarket, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", id, market)
 	ret0, _ := ret[0].(domain.IMarket)
@@ -423,12 +423,11 @@ func (m *MockIMarketPersistence) EXPECT() *MockIMarketPersistenceMockRecorder {
 }
 
 // DeleteByRegistry mocks base method.
-func (m *MockIMarketPersistence) DeleteByRegistry(registry string) (int64, error) {
+func (m *MockIMarketPersistence) DeleteByRegistry(registry string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteByRegistry", registry)
-	ret0, _ := ret[0].(int64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // DeleteByRegistry indicates an expected call of DeleteByRegistry.
@@ -468,7 +467,7 @@ func (mr *MockIMarketPersistenceMockRecorder) FindAll() *gomock.Call {
 }
 
 // FindByID mocks base method.
-func (m *MockIMarketPersistence) FindByID(id int64) (domain.IMarket, error) {
+func (m *MockIMarketPersistence) FindByID(id string) (domain.IMarket, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByID", id)
 	ret0, _ := ret[0].(domain.IMarket)
@@ -483,10 +482,10 @@ func (mr *MockIMarketPersistenceMockRecorder) FindByID(id interface{}) *gomock.C
 }
 
 // Save mocks base method.
-func (m *MockIMarketPersistence) Save(market domain.IMarket) (int64, error) {
+func (m *MockIMarketPersistence) Save(market domain.IMarket) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Save", market)
-	ret0, _ := ret[0].(int64)
+	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -498,7 +497,7 @@ func (mr *MockIMarketPersistenceMockRecorder) Save(market interface{}) *gomock.C
 }
 
 // Update mocks base method.
-func (m *MockIMarketPersistence) Update(id int64, market domain.IMarket) (domain.IMarket, error) {
+func (m *MockIMarketPersistence) Update(id string, market domain.IMarket) (domain.IMarket, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", id, market)
 	ret0, _ := ret[0].(domain.IMarket)
@@ -566,7 +565,7 @@ func (mr *MockIMarketReaderPersistenceMockRecorder) FindAll() *gomock.Call {
 }
 
 // FindByID mocks base method.
-func (m *MockIMarketReaderPersistence) FindByID(id int64) (domain.IMarket, error) {
+func (m *MockIMarketReaderPersistence) FindByID(id string) (domain.IMarket, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindByID", id)
 	ret0, _ := ret[0].(domain.IMarket)
@@ -604,12 +603,11 @@ func (m *MockIMarketWriterPersistence) EXPECT() *MockIMarketWriterPersistenceMoc
 }
 
 // DeleteByRegistry mocks base method.
-func (m *MockIMarketWriterPersistence) DeleteByRegistry(registry string) (int64, error) {
+func (m *MockIMarketWriterPersistence) DeleteByRegistry(registry string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "DeleteByRegistry", registry)
-	ret0, _ := ret[0].(int64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret0, _ := ret[0].(error)
+	return ret0
 }
 
 // DeleteByRegistry indicates an expected call of DeleteByRegistry.
@@ -619,10 +617,10 @@ func (mr *MockIMarketWriterPersistenceMockRecorder) DeleteByRegistry(registry in
 }
 
 // Save mocks base method.
-func (m *MockIMarketWriterPersistence) Save(market domain.IMarket) (int64, error) {
+func (m *MockIMarketWriterPersistence) Save(market domain.IMarket) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Save", market)
-	ret0, _ := ret[0].(int64)
+	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -634,7 +632,7 @@ func (mr *MockIMarketWriterPersistenceMockRecorder) Save(market interface{}) *go
 }
 
 // Update mocks base method.
-func (m *MockIMarketWriterPersistence) Update(id int64, market domain.IMarket) (domain.IMarket, error) {
+func (m *MockIMarketWriterPersistence) Update(id string, market domain.IMarket) (domain.IMarket, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Update", id, market)
 	ret0, _ := ret[0].(domain.IMarket)

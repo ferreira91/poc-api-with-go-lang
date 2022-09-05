@@ -12,7 +12,7 @@ func TestMarketService_Create(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	var id int64 = 1
+	var id = "1"
 	persistenceMock := mock_domain.NewMockIMarketPersistence(ctrl)
 	persistenceMock.EXPECT().Save(gomock.Any()).Return(id, nil).AnyTimes()
 	service := MarketService{Persistence: persistenceMock}
@@ -49,7 +49,7 @@ func TestMarketService_GetByID(t *testing.T) {
 	persistenceMock.EXPECT().FindByID(gomock.Any()).Return(marketMock, nil).AnyTimes()
 	service := MarketService{Persistence: persistenceMock}
 
-	result, err := service.GetByID(123)
+	result, err := service.GetByID("123")
 	require.Nil(t, err)
 	require.Equal(t, marketMock, result)
 }
@@ -113,7 +113,7 @@ func TestMarketService_Update(t *testing.T) {
 	market.District = "district"
 	market.Reference = "reference"
 
-	result, err := service.Update(123, market)
+	result, err := service.Update("123", market)
 	require.Nil(t, err)
 	require.Equal(t, marketMock, result)
 }
@@ -122,9 +122,8 @@ func TestMarketService_DeleteByRegistry(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	var rowsUpdated int64 = 1
 	persistenceMock := mock_domain.NewMockIMarketPersistence(ctrl)
-	persistenceMock.EXPECT().DeleteByRegistry(gomock.Any()).Return(rowsUpdated, nil).AnyTimes()
+	persistenceMock.EXPECT().DeleteByRegistry(gomock.Any()).Return(nil).AnyTimes()
 	service := MarketService{Persistence: persistenceMock}
 
 	err := service.DeleteByRegistry("registry")

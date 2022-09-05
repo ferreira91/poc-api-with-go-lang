@@ -10,9 +10,10 @@ import (
 	"runtime"
 )
 
-func SetUp(dbName string) (*gnomock.Container, *sql.DB, error) {
+func SetUp() (*gnomock.Container, *sql.DB, error) {
 	const user = "test"
 	const pass = "test"
+	const dbName = "test"
 
 	_, path, _, ok := runtime.Caller(0)
 	if !ok {
