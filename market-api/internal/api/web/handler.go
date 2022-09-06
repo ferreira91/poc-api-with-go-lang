@@ -8,7 +8,7 @@ import (
 )
 
 func CreateMarket(s *Server, ctx echo.Context) (err error) {
-	dto := new(MarketDTO)
+	dto := new(MarketRequestDTO)
 
 	if err = ctx.Bind(dto); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, apiError(err.Error()))
@@ -17,8 +17,7 @@ func CreateMarket(s *Server, ctx echo.Context) (err error) {
 		return echo.NewHTTPError(http.StatusBadRequest, apiError(err.Error()))
 	}
 
-	market := dto.ToMarketDomain()
-	res, err := s.MarketService.Create(market)
+	res, err := s.Service.Create(dto.ToMarketDomain())
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, apiError(err.Error()))
 	}
@@ -35,12 +34,12 @@ func CreateMarket(s *Server, ctx echo.Context) (err error) {
 func GetMarketByID(s *Server, ctx echo.Context) (err error) {
 	id := ctx.Param("id")
 
-	res, err := s.MarketService.GetByID(id)
+	res, err := s.Service.GetByID(id)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, apiError(err.Error()))
 	}
 	ctx.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-	return ctx.JSON(http.StatusOK, res)
+	return ctx.JSON(http.StatusOK, ToMarketDTO(res))
 }
 
 func GetMarkets(s *Server, ctx echo.Context) (err error) {
@@ -51,24 +50,24 @@ func GetMarkets(s *Server, ctx echo.Context) (err error) {
 
 	var res []domain.IMarket
 	if params == (MarketGetParam{}) {
-		res, err = s.MarketService.GetAll()
+		res, err = s.Service.GetAll()
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, apiError(err.Error()))
 		}
 	} else {
-		res, err = s.MarketService.Get(params.Township, params.Region5, params.Name, params.District)
+		res, err = s.Service.Get(params.Township, params.Region5, params.Name, params.District)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, apiError(err.Error()))
 		}
 	}
 
 	ctx.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-	return ctx.JSON(http.StatusOK, res)
+	return ctx.JSON(http.StatusOK, ToMarketsDTO(res))
 }
 
 func UpdateMarket(s *Server, ctx echo.Context) (err error) {
 	id := ctx.Param("id")
-	dto := new(MarketDTO)
+	dto := new(MarketRequestDTO)
 
 	if err = ctx.Bind(dto); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, apiError(err.Error()))
@@ -79,13 +78,13 @@ func UpdateMarket(s *Server, ctx echo.Context) (err error) {
 
 	market := dto.ToMarketDomain()
 
-	res, err := s.MarketService.Update(id, market)
+	res, err := s.Service.Update(id, market)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, apiError(err.Error()))
 	}
 
 	ctx.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-	return ctx.JSON(http.StatusOK, res)
+	return ctx.JSON(http.StatusOK, ToMarketDTO(res))
 }
 
 func DeleteMarket(s *Server, ctx echo.Context) (err error) {
@@ -94,10 +93,11 @@ func DeleteMarket(s *Server, ctx echo.Context) (err error) {
 		return echo.NewHTTPError(http.StatusBadRequest, apiError(err.Error()))
 	}
 
-	if err := s.MarketService.DeleteByRegistry(param.Registry); err != nil {
+	if err := s.Service.DeleteByRegistry(param.Registry); err != nil {
 		return echo.NewHTTPError(http.StatusNotFound, apiError(err.Error()))
 	}
 
+	ctx.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
 	ctx.NoContent(http.StatusNoContent)
 	return
 }

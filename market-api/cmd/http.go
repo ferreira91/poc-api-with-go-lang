@@ -7,10 +7,12 @@ package cmd
 import (
 	"database/sql"
 	"github.com/spf13/cobra"
+	"log"
 	"market-api/internal/api/web"
 	"market-api/internal/core/service"
 	"market-api/internal/db/postgres"
 	postgres2 "market-api/test/postgres"
+	"os"
 )
 
 // httpCmd represents the http command
@@ -24,6 +26,15 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		f, err := os.OpenFile("testlogfile", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+		if err != nil {
+			log.Fatalf("error opening file: %v", err)
+		}
+		defer f.Close()
+
+		log.SetOutput(f)
+		log.Println("This is a test log entry")
+
 		var db *sql.DB
 		if environment == "LOCAL" {
 			_, db, _ = postgres2.SetUp()
@@ -36,7 +47,7 @@ to quickly create a Cobra application.`,
 		var marketService = service.MarketService{Persistence: repository}
 
 		server := web.NewServer()
-		server.MarketService = &marketService
+		server.Service = &marketService
 		server.Start(port)
 	},
 }

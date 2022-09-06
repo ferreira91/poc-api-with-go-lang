@@ -41,7 +41,7 @@ func (m *MarketDb) Save(market domain.IMarket) (string, error) {
 		return "", err
 	}
 	var lastInsertId int64
-	err = stmt.QueryRow(
+	if err = stmt.QueryRow(
 		market.GetLongitude(),
 		market.GetLatitude(),
 		market.GetCensusSector(),
@@ -58,15 +58,14 @@ func (m *MarketDb) Save(market domain.IMarket) (string, error) {
 		market.GetNumber(),
 		market.GetDistrict(),
 		market.GetReference(),
-	).Scan(&lastInsertId)
+	).Scan(&lastInsertId); err != nil {
+		return "", err
+	}
 
-	if err != nil {
+	if err = stmt.Close(); err != nil {
 		return "", err
 	}
-	err = stmt.Close()
-	if err != nil {
-		return "", err
-	}
+
 	id := strconv.FormatInt(lastInsertId, 10)
 	return id, nil
 }

@@ -7,7 +7,7 @@ import (
 )
 
 type Server struct {
-	MarketService domain.IMarketService
+	Service domain.IMarketService
 }
 
 func NewServer() *Server {
