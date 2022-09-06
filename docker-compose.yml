@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  db-postgres:
+    build: ./infrastructure/db/postgres
+    ports:
+      - "5431:5431"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=market
+    volumes:
+      - .infrastructure/db/postgres/data:/data
+
+  market:
+    build: ./market-api
+    environment:
+      - DB_DRIVER_NAME=postgres
+      - DB_HOST=db-postgres
+      - DB_PORT=5431
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=market
+      - DB_SSL_MODE=disable
+    depends_on:
+      - db-postgres
