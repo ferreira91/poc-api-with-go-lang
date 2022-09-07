@@ -78,8 +78,8 @@ func (m MarketRequestDTO) ToMarketDomain() *domain.Market {
 	market.WeightingArea = m.WeightingArea
 	market.TownshipCode = m.TownshipCode
 	market.Township = m.Township
-	market.SubPrefectureCode = m.SubPrefectureCode
-	market.SubPrefecture = m.SubPrefecture
+	market.SubprefectureCode = m.SubPrefectureCode
+	market.Subprefecture = m.SubPrefecture
 	market.Region5 = m.Region5
 	market.Region8 = m.Region8
 	market.Name = m.Name
@@ -101,8 +101,8 @@ func ToMarketDTO(market domain.IMarket) MarketResponseDTO {
 		WeightingArea:     market.GetWeightingArea(),
 		TownshipCode:      market.GetTownshipCode(),
 		Township:          market.GetTownship(),
-		SubPrefectureCode: market.GetSubPrefectureCode(),
-		SubPrefecture:     market.GetSubPrefecture(),
+		SubPrefectureCode: market.GetSubprefectureCode(),
+		SubPrefecture:     market.GetSubprefecture(),
 		Region5:           market.GetRegion5(),
 		Region8:           market.GetRegion8(),
 		Name:              market.GetName(),
@@ -126,8 +126,8 @@ func ToMarketsDTO(markets []domain.IMarket) []MarketResponseDTO {
 			WeightingArea:     market.GetWeightingArea(),
 			TownshipCode:      market.GetTownshipCode(),
 			Township:          market.GetTownship(),
-			SubPrefectureCode: market.GetSubPrefectureCode(),
-			SubPrefecture:     market.GetSubPrefecture(),
+			SubPrefectureCode: market.GetSubprefectureCode(),
+			SubPrefecture:     market.GetSubprefecture(),
 			Region5:           market.GetRegion5(),
 			Region8:           market.GetRegion8(),
 			Name:              market.GetName(),

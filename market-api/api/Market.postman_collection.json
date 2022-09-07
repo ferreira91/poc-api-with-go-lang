@@ -1,0 +1,165 @@
+{
+	"info": {
+		"_postman_id": "fc930f5a-40b0-4411-8f35-bb567632e107",
+		"name": "market",
+		"description": "Market API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create market",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"longitude\": \"-11111111\",\n    \"latitude\": \"-22222222\",\n    \"censusSector\": \"333333333333333\",\n    \"weightingArea\": \"4444444444444\",\n    \"townshipCode\": \"555555555\",\n    \"Township\": \"township\",\n    \"subPrefectureCode\": \"66\",\n    \"subPrefecture\": \"subPrefecture\",\n    \"region5\": \"region\",\n    \"region8\": \"region8\",\n    \"name\": \"name\",\n    \"registry\": \"666669\",\n    \"street\": \"street\",\n    \"number\": \"777777777777777\",\n    \"district\": \"district\",\n    \"reference\": \"reference\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{market_local}}",
+					"host": [
+						"{{market_local}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get market",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{market_local}}/1",
+					"host": [
+						"{{market_local}}"
+					],
+					"path": [
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get markets",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{market_local}}",
+					"host": [
+						"{{market_local}}"
+					],
+					"query": [
+						{
+							"key": "township",
+							"value": "township",
+							"disabled": true
+						},
+						{
+							"key": "region5",
+							"value": "Leste",
+							"disabled": true
+						},
+						{
+							"key": "name",
+							"value": "name",
+							"disabled": true
+						},
+						{
+							"key": "district",
+							"value": "district",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update market",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"longitude\": \"-11111111\",\n    \"latitude\": \"-22222222\",\n    \"censusSector\": \"333333333333333\",\n    \"weightingArea\": \"4444444444444\",\n    \"townshipCode\": \"555555555\",\n    \"Township\": \"township\",\n    \"subPrefectureCode\": \"66\",\n    \"subPrefecture\": \"subPrefecture\",\n    \"region5\": \"region\",\n    \"region8\": \"region8\",\n    \"name\": \"name\",\n    \"registry\": \"123456\",\n    \"street\": \"street\",\n    \"number\": \"777777777777777\",\n    \"district\": \"district\",\n    \"reference\": \"reference\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{market_local}}/1",
+					"host": [
+						"{{market_local}}"
+					],
+					"path": [
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete market",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"longitude\": \"-11111111\",\n    \"latitude\": \"-22222222\",\n    \"censusSector\": \"333333333333333\",\n    \"weightingArea\": \"4444444444444\",\n    \"townshipCode\": \"555555555\",\n    \"Township\": \"township\",\n    \"subPrefectureCode\": \"66\",\n    \"subPrefecture\": \"subPrefecture\",\n    \"region5\": \"region5\",\n    \"region8\": \"region8\",\n    \"name\": \"name\",\n    \"registry\": \"666666\",\n    \"street\": \"street\",\n    \"number\": \"777777777777777\",\n    \"district\": \"district\",\n    \"reference\": \"reference\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{market_local}}?registry=10",
+					"host": [
+						"{{market_local}}"
+					],
+					"query": [
+						{
+							"key": "registry",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

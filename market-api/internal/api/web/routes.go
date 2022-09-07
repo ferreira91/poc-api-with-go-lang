@@ -5,19 +5,19 @@ import (
 )
 
 func InitRoutes(s *Server, e *echo.Echo) {
-	e.POST("/markets", func(c echo.Context) error {
+	e.POST("/v1/markets", func(c echo.Context) error {
 		return CreateMarket(s, c)
 	})
-	e.GET("/markets/:id", func(c echo.Context) error {
+	e.GET("/v1/markets/:id", func(c echo.Context) error {
 		return GetMarketByID(s, c)
 	})
-	e.GET("/markets", func(c echo.Context) error {
+	e.GET("/v1/markets", func(c echo.Context) error {
 		return GetMarkets(s, c)
 	})
-	e.PUT("/markets/:id", func(c echo.Context) error {
+	e.PUT("/v1/markets/:id", func(c echo.Context) error {
 		return UpdateMarket(s, c)
 	})
-	e.DELETE("/markets", func(c echo.Context) error {
+	e.DELETE("/v1/markets", func(c echo.Context) error {
 		return DeleteMarket(s, c)
 	})
 }

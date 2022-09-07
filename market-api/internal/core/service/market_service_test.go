@@ -4,7 +4,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 	"market-api/internal/core/domain"
-	mock_domain "market-api/test"
+	mockdomain "market-api/test"
 	"testing"
 )
 
@@ -13,7 +13,7 @@ func TestMarketService_Create(t *testing.T) {
 	defer ctrl.Finish()
 
 	var id = "1"
-	persistenceMock := mock_domain.NewMockIMarketPersistence(ctrl)
+	persistenceMock := mockdomain.NewMockIMarketPersistence(ctrl)
 	persistenceMock.EXPECT().Save(gomock.Any()).Return(id, nil).AnyTimes()
 	service := MarketService{Persistence: persistenceMock}
 
@@ -44,8 +44,8 @@ func TestMarketService_GetByID(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	marketMock := mock_domain.NewMockIMarket(ctrl)
-	persistenceMock := mock_domain.NewMockIMarketPersistence(ctrl)
+	marketMock := mockdomain.NewMockIMarket(ctrl)
+	persistenceMock := mockdomain.NewMockIMarketPersistence(ctrl)
 	persistenceMock.EXPECT().FindByID(gomock.Any()).Return(marketMock, nil).AnyTimes()
 	service := MarketService{Persistence: persistenceMock}
 
@@ -58,10 +58,10 @@ func TestMarketService_GetAll(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	marketMock := mock_domain.NewMockIMarket(ctrl)
+	marketMock := mockdomain.NewMockIMarket(ctrl)
 	markets := append(make([]domain.IMarket, 0), marketMock)
 
-	persistenceMock := mock_domain.NewMockIMarketPersistence(ctrl)
+	persistenceMock := mockdomain.NewMockIMarketPersistence(ctrl)
 	persistenceMock.EXPECT().FindAll().Return(markets, nil).AnyTimes()
 	service := MarketService{Persistence: persistenceMock}
 
@@ -74,13 +74,13 @@ func TestMarketService_Get(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	marketMock := mock_domain.NewMockIMarket(ctrl)
+	marketMock := mockdomain.NewMockIMarket(ctrl)
 	markets := append(make([]domain.IMarket, 0), marketMock)
 
-	persistenceMock := mock_domain.NewMockIMarketPersistence(ctrl)
-	any := gomock.Any()
+	persistenceMock := mockdomain.NewMockIMarketPersistence(ctrl)
+	a := gomock.Any()
 	persistenceMock.EXPECT().Find(
-		any, any, any, any, any, any, any, any, any, any, any, any, any, any, any, any,
+		a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a,
 	).Return(markets, nil).AnyTimes()
 	service := MarketService{Persistence: persistenceMock}
 
@@ -93,8 +93,8 @@ func TestMarketService_Update(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	marketMock := mock_domain.NewMockIMarket(ctrl)
-	persistenceMock := mock_domain.NewMockIMarketPersistence(ctrl)
+	marketMock := mockdomain.NewMockIMarket(ctrl)
+	persistenceMock := mockdomain.NewMockIMarketPersistence(ctrl)
 	persistenceMock.EXPECT().Update(gomock.Any(), gomock.Any()).Return(marketMock, nil).AnyTimes()
 	service := MarketService{Persistence: persistenceMock}
 
@@ -125,7 +125,7 @@ func TestMarketService_DeleteByRegistry(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	persistenceMock := mock_domain.NewMockIMarketPersistence(ctrl)
+	persistenceMock := mockdomain.NewMockIMarketPersistence(ctrl)
 	persistenceMock.EXPECT().DeleteByRegistry(gomock.Any()).Return(nil).AnyTimes()
 	service := MarketService{Persistence: persistenceMock}
 

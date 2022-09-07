@@ -23,11 +23,11 @@ func CreateMarket(s *Server, ctx echo.Context) (err error) {
 	}
 
 	req := ctx.Request()
-	location := fmt.Sprintf("%s/%s/%s", req.Host, req.RequestURI, res)
+	location := fmt.Sprintf("%s%s/%s", req.Host, req.RequestURI, res)
 	h := ctx.Response().Header()
 	h.Add(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
 	h.Add("Location", location)
-	ctx.NoContent(http.StatusCreated)
+	_ = ctx.NoContent(http.StatusCreated)
 	return
 }
 
@@ -55,7 +55,24 @@ func GetMarkets(s *Server, ctx echo.Context) (err error) {
 			return echo.NewHTTPError(http.StatusInternalServerError, apiError(err.Error()))
 		}
 	} else {
-		res, err = s.Service.Get(params.Township, params.Region5, params.Name, params.District)
+		res, err = s.Service.Get(
+			"",
+			"",
+			"",
+			"",
+			params.Township,
+			"",
+			"",
+			"",
+			params.Region5,
+			"",
+			params.Name,
+			"",
+			"",
+			"",
+			params.District,
+			"",
+		)
 		if err != nil {
 			return echo.NewHTTPError(http.StatusInternalServerError, apiError(err.Error()))
 		}
@@ -98,6 +115,6 @@ func DeleteMarket(s *Server, ctx echo.Context) (err error) {
 	}
 
 	ctx.Response().Header().Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
-	ctx.NoContent(http.StatusNoContent)
+	_ = ctx.NoContent(http.StatusNoContent)
 	return
 }

@@ -79,8 +79,8 @@ func TestGetMarketByID(t *testing.T) {
 	market.WeightingArea = "4444444444444"
 	market.TownshipCode = "555555555"
 	market.Township = "township"
-	market.SubPrefectureCode = "66"
-	market.SubPrefecture = "subPrefecture"
+	market.SubprefectureCode = "66"
+	market.Subprefecture = "subPrefecture"
 	market.Region5 = "region5"
 	market.Region8 = "region8"
 	market.Name = "name"
@@ -153,8 +153,8 @@ func TestGetMarkets(t *testing.T) {
 	market.WeightingArea = "4444444444444"
 	market.TownshipCode = "555555555"
 	market.Township = "township"
-	market.SubPrefectureCode = "66"
-	market.SubPrefecture = "subPrefecture"
+	market.SubprefectureCode = "66"
+	market.Subprefecture = "subPrefecture"
 	market.Region5 = "region5"
 	market.Region8 = "region8"
 	market.Name = "name"
@@ -214,8 +214,8 @@ func TestGetMarkets(t *testing.T) {
 		assert.Error(t, echo.NewHTTPError(http.StatusInternalServerError), "Error ")
 	}
 
-	any := gomock.Any()
-	serviceMock.EXPECT().Get(any, any, any, any).Return(markets, nil).AnyTimes()
+	a := gomock.Any()
+	serviceMock.EXPECT().Get(a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a).Return(markets, nil).AnyTimes()
 
 	q := make(url.Values)
 	q.Add("township", "test")
@@ -238,7 +238,7 @@ func TestGetMarkets(t *testing.T) {
 	}
 
 	serviceMockError = mock_domain.NewMockIMarketService(ctrl)
-	serviceMockError.EXPECT().Get(any, any, any, any).Return(nil, errors.New("Error ")).AnyTimes()
+	serviceMockError.EXPECT().Get(a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a).Return(nil, errors.New("Error ")).AnyTimes()
 
 	// error scenario
 	if assert.Error(t, CreateMarket(s, c)) {
@@ -258,8 +258,8 @@ func TestUpdateMarket(t *testing.T) {
 	market.WeightingArea = "4444444444444"
 	market.TownshipCode = "555555555"
 	market.Township = "township"
-	market.SubPrefectureCode = "66"
-	market.SubPrefecture = "subPrefecture"
+	market.SubprefectureCode = "66"
+	market.Subprefecture = "subPrefecture"
 	market.Region5 = "region"
 	market.Region8 = "region8"
 	market.Name = "name"
@@ -270,8 +270,8 @@ func TestUpdateMarket(t *testing.T) {
 	market.Reference = "reference"
 
 	serviceMock := mock_domain.NewMockIMarketService(ctrl)
-	any := gomock.Any()
-	serviceMock.EXPECT().Update(any, any).Return(market, nil).AnyTimes()
+	a := gomock.Any()
+	serviceMock.EXPECT().Update(a, a).Return(market, nil).AnyTimes()
 
 	var marketJson = `{
 		"id": "1",
@@ -316,7 +316,7 @@ func TestUpdateMarket(t *testing.T) {
 	}
 
 	serviceMockError := mock_domain.NewMockIMarketService(ctrl)
-	serviceMockError.EXPECT().Update(any, any).Return(nil, errors.New("Error ")).AnyTimes()
+	serviceMockError.EXPECT().Update(a, a).Return(nil, errors.New("Error ")).AnyTimes()
 
 	// error scenario
 	if assert.Error(t, CreateMarket(s, c)) {
