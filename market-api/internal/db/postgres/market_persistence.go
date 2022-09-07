@@ -16,8 +16,10 @@ func NewMarketDb(db *sql.DB) *MarketDb {
 }
 
 func (m *MarketDb) Save(market domain.IMarket) (string, error) {
+
 	stmt, err := m.db.Prepare(
 		`INSERT INTO market (
+                id,
 				longitude,
 				latitude,
 				census_sector,
@@ -33,23 +35,29 @@ func (m *MarketDb) Save(market domain.IMarket) (string, error) {
 				street,
 				number,
 				district,
-				reference
+				reference 
 		)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING id`,
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`,
 	)
 	if err != nil {
 		return "", err
 	}
-	var lastInsertId int64
-	if err = stmt.QueryRow(
+
+	id, err := m.getId()
+	if err != nil {
+		return "", err
+	}
+
+	_, err = stmt.Exec(
+		id,
 		market.GetLongitude(),
 		market.GetLatitude(),
 		market.GetCensusSector(),
 		market.GetWeightingArea(),
 		market.GetTownshipCode(),
 		market.GetTownship(),
-		market.GetSubPrefectureCode(),
-		market.GetSubPrefecture(),
+		market.GetSubprefectureCode(),
+		market.GetSubprefecture(),
 		market.GetRegion5(),
 		market.GetRegion8(),
 		market.GetName(),
@@ -58,7 +66,9 @@ func (m *MarketDb) Save(market domain.IMarket) (string, error) {
 		market.GetNumber(),
 		market.GetDistrict(),
 		market.GetReference(),
-	).Scan(&lastInsertId); err != nil {
+	)
+
+	if err != nil {
 		return "", err
 	}
 
@@ -66,12 +76,10 @@ func (m *MarketDb) Save(market domain.IMarket) (string, error) {
 		return "", err
 	}
 
-	id := strconv.FormatInt(lastInsertId, 10)
-	return id, nil
+	return strconv.FormatInt(id, 10), nil
 }
 
 func (m *MarketDb) FindByID(id string) (domain.IMarket, error) {
-	var market domain.Market
 	stmt, err := m.db.Prepare(
 		`SELECT 
 			id,
@@ -98,29 +106,30 @@ func (m *MarketDb) FindByID(id string) (domain.IMarket, error) {
 		return nil, err
 	}
 
+	var entity MarketEntity
 	err = stmt.QueryRow(id).Scan(
-		&market.ID,
-		&market.Longitude,
-		&market.Latitude,
-		&market.CensusSector,
-		&market.WeightingArea,
-		&market.Township,
-		&market.TownshipCode,
-		&market.SubPrefectureCode,
-		&market.SubPrefecture,
-		&market.Region5,
-		&market.Region8,
-		&market.Name,
-		&market.Registry,
-		&market.Street,
-		&market.Number,
-		&market.District,
-		&market.Reference,
+		&entity.ID,
+		&entity.Longitude,
+		&entity.Latitude,
+		&entity.CensusSector,
+		&entity.WeightingArea,
+		&entity.TownshipCode,
+		&entity.Township,
+		&entity.SubprefectureCode,
+		&entity.Subprefecture,
+		&entity.Region5,
+		&entity.Region8,
+		&entity.Name,
+		&entity.Registry,
+		&entity.Street,
+		&entity.Number,
+		&entity.District,
+		&entity.Reference,
 	)
 	if err != nil {
 		return nil, err
 	}
-	return &market, nil
+	return entity.ToMarketDomain(), nil
 }
 
 func (m *MarketDb) FindAll() ([]domain.IMarket, error) {
@@ -157,35 +166,52 @@ func (m *MarketDb) FindAll() ([]domain.IMarket, error) {
 
 	var markets []domain.IMarket
 	for rows.Next() {
-		var market domain.Market
+		var entity MarketEntity
 		if err := rows.Scan(
-			&market.ID,
-			&market.Longitude,
-			&market.Latitude,
-			&market.CensusSector,
-			&market.WeightingArea,
-			&market.Township,
-			&market.TownshipCode,
-			&market.SubPrefectureCode,
-			&market.SubPrefecture,
-			&market.Region5,
-			&market.Region8,
-			&market.Name,
-			&market.Registry,
-			&market.Street,
-			&market.Number,
-			&market.District,
-			&market.Reference,
+			&entity.ID,
+			&entity.Longitude,
+			&entity.Latitude,
+			&entity.CensusSector,
+			&entity.WeightingArea,
+			&entity.TownshipCode,
+			&entity.Township,
+			&entity.SubprefectureCode,
+			&entity.Subprefecture,
+			&entity.Region5,
+			&entity.Region8,
+			&entity.Name,
+			&entity.Registry,
+			&entity.Street,
+			&entity.Number,
+			&entity.District,
+			&entity.Reference,
 		); err != nil {
 			return nil, err
 		}
-		markets = append(markets, &market)
+		markets = append(markets, entity.ToMarketDomain())
 	}
 
 	return markets, nil
 }
 
-func (m *MarketDb) Find(query map[string]string) ([]domain.IMarket, error) {
+func (m *MarketDb) Find(
+	longitude string,
+	latitude string,
+	censusSector string,
+	weightingArea string,
+	township string,
+	townshipCode string,
+	subprefectureCode string,
+	subprefecture string,
+	region5 string,
+	region8 string,
+	name string,
+	registry string,
+	street string,
+	number string,
+	district string,
+	reference string,
+) ([]domain.IMarket, error) {
 	stmt, err := m.db.Prepare(
 		fmt.Sprintf(
 			`SELECT 
@@ -206,7 +232,24 @@ func (m *MarketDb) Find(query map[string]string) ([]domain.IMarket, error) {
 						number,
 						district,
 						reference
-					FROM market %s`, generateQueryFilter(query),
+					FROM market %s`, generateQueryFilter(
+				longitude,
+				latitude,
+				censusSector,
+				weightingArea,
+				township,
+				townshipCode,
+				subprefectureCode,
+				subprefecture,
+				region5,
+				region8,
+				name,
+				registry,
+				street,
+				number,
+				district,
+				reference,
+			),
 		),
 	)
 	if err != nil {
@@ -221,29 +264,29 @@ func (m *MarketDb) Find(query map[string]string) ([]domain.IMarket, error) {
 
 	markets := []domain.IMarket{}
 	for rows.Next() {
-		var market domain.Market
+		var entity MarketEntity
 		if err := rows.Scan(
-			&market.ID,
-			&market.Longitude,
-			&market.Latitude,
-			&market.CensusSector,
-			&market.WeightingArea,
-			&market.Township,
-			&market.TownshipCode,
-			&market.SubPrefectureCode,
-			&market.SubPrefecture,
-			&market.Region5,
-			&market.Region8,
-			&market.Name,
-			&market.Registry,
-			&market.Street,
-			&market.Number,
-			&market.District,
-			&market.Reference,
+			&entity.ID,
+			&entity.Longitude,
+			&entity.Latitude,
+			&entity.CensusSector,
+			&entity.WeightingArea,
+			&entity.TownshipCode,
+			&entity.Township,
+			&entity.SubprefectureCode,
+			&entity.Subprefecture,
+			&entity.Region5,
+			&entity.Region8,
+			&entity.Name,
+			&entity.Registry,
+			&entity.Street,
+			&entity.Number,
+			&entity.District,
+			&entity.Reference,
 		); err != nil {
 			return nil, err
 		}
-		markets = append(markets, &market)
+		markets = append(markets, entity.ToMarketDomain())
 	}
 
 	return markets, nil
@@ -258,7 +301,7 @@ func (m *MarketDb) Update(id string, market domain.IMarket) (domain.IMarket, err
             weighting_area = $6,
             township_code = $7,
             township = $8,
-        	subprefecture_code = $9,
+            subprefecture_code = $9,
             subprefecture = $10,
             region_5 = $11,
             region_8 = $12,
@@ -284,8 +327,8 @@ func (m *MarketDb) Update(id string, market domain.IMarket) (domain.IMarket, err
 		market.GetWeightingArea(),
 		market.GetTownshipCode(),
 		market.GetTownship(),
-		market.GetSubPrefectureCode(),
-		market.GetSubPrefecture(),
+		market.GetSubprefectureCode(),
+		market.GetSubprefecture(),
 		market.GetRegion5(),
 		market.GetRegion8(),
 		market.GetName(),
@@ -301,8 +344,8 @@ func (m *MarketDb) Update(id string, market domain.IMarket) (domain.IMarket, err
 		&marketUpdated.WeightingArea,
 		&marketUpdated.TownshipCode,
 		&marketUpdated.Township,
-		&marketUpdated.SubPrefectureCode,
-		&marketUpdated.SubPrefecture,
+		&marketUpdated.SubprefectureCode,
+		&marketUpdated.Subprefecture,
 		&marketUpdated.Region5,
 		&marketUpdated.Region8,
 		&marketUpdated.Name,
@@ -341,68 +384,103 @@ func (m *MarketDb) DeleteByRegistry(registry string) error {
 	return nil
 }
 
-func generateQueryFilter(query map[string]string) string {
+func generateQueryFilter(
+	longitude string,
+	latitude string,
+	censusSector string,
+	weightingArea string,
+	township string,
+	townshipCode string,
+	subprefectureCode string,
+	subprefecture string,
+	region5 string,
+	region8 string,
+	name string,
+	registry string,
+	street string,
+	number string,
+	district string,
+	reference string,
+) string {
 	where := "where 1=1"
 
-	if longitude, ok := query["Longitude"]; ok {
+	if ok := longitude != ""; ok {
 		where += " AND longitude='" + longitude + "'"
 	}
 
-	if latitude, ok := query["Latitude"]; ok {
+	if ok := latitude != ""; ok {
 		where += " AND latitude='" + latitude + "'"
 	}
 
-	if weightingArea, ok := query["WeightingArea"]; ok {
+	if ok := censusSector != ""; ok {
+		where += " AND census_sector='" + censusSector + "'"
+	}
+
+	if ok := weightingArea != ""; ok {
 		where += " AND weighting_area='" + weightingArea + "'"
 	}
 
-	if townshipCode, ok := query["TownshipCode"]; ok {
+	if ok := townshipCode != ""; ok {
 		where += " AND township_code='" + townshipCode + "'"
 	}
 
-	if township, ok := query["Township"]; ok {
+	if ok := township != ""; ok {
 		where += " AND township='" + township + "'"
 	}
 
-	if subprefectureCode, ok := query["SubprefectureCode"]; ok {
+	if ok := subprefectureCode != ""; ok {
 		where += " AND subprefecture_code='" + subprefectureCode + "'"
 	}
 
-	if subprefecture, ok := query["Subprefecture"]; ok {
+	if ok := subprefecture != ""; ok {
 		where += " AND subprefecture='" + subprefecture + "'"
 	}
 
-	if region5, ok := query["Region5"]; ok {
+	if ok := region5 != ""; ok {
 		where += " AND region_5='" + region5 + "'"
 	}
 
-	if region8, ok := query["Region8"]; ok {
+	if ok := region8 != ""; ok {
 		where += " AND region_8='" + region8 + "'"
 	}
 
-	if name, ok := query["Name"]; ok {
+	if ok := name != ""; ok {
 		where += " AND name='" + name + "'"
 	}
 
-	if registry, ok := query["Registry"]; ok {
+	if ok := registry != ""; ok {
 		where += " AND registry='" + registry + "'"
 	}
 
-	if street, ok := query["Street"]; ok {
+	if ok := street != ""; ok {
 		where += " AND street='" + street + "'"
 	}
 
-	if number, ok := query["Number"]; ok {
+	if ok := number != ""; ok {
 		where += " AND number='" + number + "'"
 	}
 
-	if district, ok := query["District"]; ok {
+	if ok := district != ""; ok {
 		where += " AND district='" + district + "'"
 	}
 
-	if reference, ok := query["Reference"]; ok {
+	if ok := reference != ""; ok {
 		where += " AND reference='" + reference + "'"
 	}
 
 	return where
+}
+
+func (m *MarketDb) getId() (int64, error) {
+	stmt, err := m.db.Prepare(`SELECT SETVAL('market_id_seq', (SELECT MAX(id) FROM market)+1)`)
+	if err != nil {
+		return 0, err
+	}
+	var id int64
+	err = stmt.QueryRow().Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+
+	return id, err
 }

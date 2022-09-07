@@ -202,32 +202,32 @@ func (mr *MockIMarketMockRecorder) GetStreet() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStreet", reflect.TypeOf((*MockIMarket)(nil).GetStreet))
 }
 
-// GetSubPrefecture mocks base method.
-func (m *MockIMarket) GetSubPrefecture() string {
+// GetSubprefecture mocks base method.
+func (m *MockIMarket) GetSubprefecture() string {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetSubPrefecture")
+	ret := m.ctrl.Call(m, "GetSubprefecture")
 	ret0, _ := ret[0].(string)
 	return ret0
 }
 
-// GetSubPrefecture indicates an expected call of GetSubPrefecture.
-func (mr *MockIMarketMockRecorder) GetSubPrefecture() *gomock.Call {
+// GetSubprefecture indicates an expected call of GetSubprefecture.
+func (mr *MockIMarketMockRecorder) GetSubprefecture() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSubPrefecture", reflect.TypeOf((*MockIMarket)(nil).GetSubPrefecture))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSubprefecture", reflect.TypeOf((*MockIMarket)(nil).GetSubprefecture))
 }
 
-// GetSubPrefectureCode mocks base method.
-func (m *MockIMarket) GetSubPrefectureCode() string {
+// GetSubprefectureCode mocks base method.
+func (m *MockIMarket) GetSubprefectureCode() string {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetSubPrefectureCode")
+	ret := m.ctrl.Call(m, "GetSubprefectureCode")
 	ret0, _ := ret[0].(string)
 	return ret0
 }
 
-// GetSubPrefectureCode indicates an expected call of GetSubPrefectureCode.
-func (mr *MockIMarketMockRecorder) GetSubPrefectureCode() *gomock.Call {
+// GetSubprefectureCode indicates an expected call of GetSubprefectureCode.
+func (mr *MockIMarketMockRecorder) GetSubprefectureCode() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSubPrefectureCode", reflect.TypeOf((*MockIMarket)(nil).GetSubPrefectureCode))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSubprefectureCode", reflect.TypeOf((*MockIMarket)(nil).GetSubprefectureCode))
 }
 
 // GetTownship mocks base method.
@@ -340,18 +340,18 @@ func (mr *MockIMarketServiceMockRecorder) DeleteByRegistry(registry interface{})
 }
 
 // Get mocks base method.
-func (m *MockIMarketService) Get(township, region5, name, district string) ([]domain.IMarket, error) {
+func (m *MockIMarketService) Get(longitude, latitude, censusSector, weightingArea, township, townshipCode, subprefectureCode, subprefecture, region5, region8, name, registry, street, number, district, reference string) ([]domain.IMarket, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Get", township, region5, name, district)
+	ret := m.ctrl.Call(m, "Get", longitude, latitude, censusSector, weightingArea, township, townshipCode, subprefectureCode, subprefecture, region5, region8, name, registry, street, number, district, reference)
 	ret0, _ := ret[0].([]domain.IMarket)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Get indicates an expected call of Get.
-func (mr *MockIMarketServiceMockRecorder) Get(township, region5, name, district interface{}) *gomock.Call {
+func (mr *MockIMarketServiceMockRecorder) Get(longitude, latitude, censusSector, weightingArea, township, townshipCode, subprefectureCode, subprefecture, region5, region8, name, registry, street, number, district, reference interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockIMarketService)(nil).Get), township, region5, name, district)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockIMarketService)(nil).Get), longitude, latitude, censusSector, weightingArea, township, townshipCode, subprefectureCode, subprefecture, region5, region8, name, registry, street, number, district, reference)
 }
 
 // GetAll mocks base method.
@@ -437,18 +437,18 @@ func (mr *MockIMarketPersistenceMockRecorder) DeleteByRegistry(registry interfac
 }
 
 // Find mocks base method.
-func (m *MockIMarketPersistence) Find(query map[string]string) ([]domain.IMarket, error) {
+func (m *MockIMarketPersistence) Find(longitude, latitude, censusSector, weightingArea, township, townshipCode, subprefectureCode, subprefecture, region5, region8, name, registry, street, number, district, reference string) ([]domain.IMarket, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Find", query)
+	ret := m.ctrl.Call(m, "Find", longitude, latitude, censusSector, weightingArea, township, townshipCode, subprefectureCode, subprefecture, region5, region8, name, registry, street, number, district, reference)
 	ret0, _ := ret[0].([]domain.IMarket)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Find indicates an expected call of Find.
-func (mr *MockIMarketPersistenceMockRecorder) Find(query interface{}) *gomock.Call {
+func (mr *MockIMarketPersistenceMockRecorder) Find(longitude, latitude, censusSector, weightingArea, township, townshipCode, subprefectureCode, subprefecture, region5, region8, name, registry, street, number, district, reference interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockIMarketPersistence)(nil).Find), query)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockIMarketPersistence)(nil).Find), longitude, latitude, censusSector, weightingArea, township, townshipCode, subprefectureCode, subprefecture, region5, region8, name, registry, street, number, district, reference)
 }
 
 // FindAll mocks base method.
@@ -535,18 +535,18 @@ func (m *MockIMarketReaderPersistence) EXPECT() *MockIMarketReaderPersistenceMoc
 }
 
 // Find mocks base method.
-func (m *MockIMarketReaderPersistence) Find(query map[string]string) ([]domain.IMarket, error) {
+func (m *MockIMarketReaderPersistence) Find(longitude, latitude, censusSector, weightingArea, township, townshipCode, subprefectureCode, subprefecture, region5, region8, name, registry, street, number, district, reference string) ([]domain.IMarket, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Find", query)
+	ret := m.ctrl.Call(m, "Find", longitude, latitude, censusSector, weightingArea, township, townshipCode, subprefectureCode, subprefecture, region5, region8, name, registry, street, number, district, reference)
 	ret0, _ := ret[0].([]domain.IMarket)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Find indicates an expected call of Find.
-func (mr *MockIMarketReaderPersistenceMockRecorder) Find(query interface{}) *gomock.Call {
+func (mr *MockIMarketReaderPersistenceMockRecorder) Find(longitude, latitude, censusSector, weightingArea, township, townshipCode, subprefectureCode, subprefecture, region5, region8, name, registry, street, number, district, reference interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockIMarketReaderPersistence)(nil).Find), query)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Find", reflect.TypeOf((*MockIMarketReaderPersistence)(nil).Find), longitude, latitude, censusSector, weightingArea, township, townshipCode, subprefectureCode, subprefecture, region5, region8, name, registry, street, number, district, reference)
 }
 
 // FindAll mocks base method.

@@ -19,8 +19,8 @@ func TestMarketDb_Save(t *testing.T) {
 	market.WeightingArea = "4444444444444"
 	market.TownshipCode = "555555555"
 	market.Township = "township"
-	market.SubPrefectureCode = "66"
-	market.SubPrefecture = "subPrefecture"
+	market.SubprefectureCode = "66"
+	market.Subprefecture = "subPrefecture"
 	market.Region5 = "region"
 	market.Region8 = "region8"
 	market.Name = "name"
@@ -73,31 +73,64 @@ func TestMarketDb_Find(t *testing.T) {
 
 	marketDb := NewMarketDb(db)
 
-	query := make(map[string]string)
-	query["Longitude"] = "-1111111"
-	query["Latitude"] = "-9999999"
-	query["CensusSector"] = "census_sector"
-	query["WeightingArea"] = "weighting_are"
-	query["TownshipCode"] = "123"
-	query["Township"] = "township"
-	query["SubprefectureCode"] = "00"
-	query["Subprefecture"] = "subprefecture"
-	query["Region5"] = "region"
-	query["Region8"] = "region_"
-	query["Name"] = "name"
-	query["Registry"] = "123456"
-	query["Street"] = "street"
-	query["Number"] = "123"
-	query["District"] = "district"
-	query["Reference"] = "reference"
+	longitude := "-1111111"
+	latitude := "-9999999"
+	censusSector := "census_sector"
+	weightingArea := "weighting_are"
+	townshipCode := "123"
+	township := "township"
+	subprefectureCode := "00"
+	subprefecture := "subprefecture"
+	region5 := "region"
+	region8 := "region_"
+	name := "name"
+	registry := "123456"
+	street := "street"
+	number := "123"
+	district := "district"
+	reference := "reference"
 
-	result, err := marketDb.Find(query)
+	result, err := marketDb.Find(
+		longitude,
+		latitude,
+		censusSector,
+		weightingArea,
+		township,
+		townshipCode,
+		subprefectureCode,
+		subprefecture,
+		region5,
+		region8,
+		name,
+		registry,
+		street,
+		number,
+		district,
+		reference,
+	)
 	require.Nil(t, err)
 	require.Equal(t, result[0].GetID(), "1")
 	require.Equal(t, len(result), 1)
 
-	query["Registry"] = "unknown"
-	result, err = marketDb.Find(query)
+	registry = "unknown"
+	result, err = marketDb.Find(
+		longitude,
+		latitude,
+		censusSector,
+		weightingArea,
+		township,
+		townshipCode,
+		subprefectureCode,
+		subprefecture,
+		region5,
+		region8,
+		name,
+		registry,
+		street,
+		number,
+		district,
+		reference,
+	)
 	require.Nil(t, err)
 	require.Empty(t, result)
 }
@@ -113,8 +146,8 @@ func TestMarketDb_Update(t *testing.T) {
 	market.WeightingArea = "test"
 	market.TownshipCode = "555555555"
 	market.Township = "test"
-	market.SubPrefectureCode = "55"
-	market.SubPrefecture = "test"
+	market.SubprefectureCode = "55"
+	market.Subprefecture = "test"
 	market.Region5 = "test"
 	market.Region8 = "test"
 	market.Name = "test"
