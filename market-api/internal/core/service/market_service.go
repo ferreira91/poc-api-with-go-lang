@@ -34,21 +34,42 @@ func (s *MarketService) GetAll() ([]domain.IMarket, error) {
 	return result, nil
 }
 
-func (s *MarketService) Get(township string, region5 string, name string, district string) ([]domain.IMarket, error) {
-	query := make(map[string]string)
-	if township != "" {
-		query["Township"] = township
-	}
-	if region5 != "" {
-		query["Region5"] = region5
-	}
-	if name != "" {
-		query["Name"] = name
-	}
-	if district != "" {
-		query["District"] = district
-	}
-	result, err := s.Persistence.Find(query)
+func (s *MarketService) Get(
+	longitude string,
+	latitude string,
+	censusSector string,
+	weightingArea string,
+	township string,
+	townshipCode string,
+	subprefectureCode string,
+	subprefecture string,
+	region5 string,
+	region8 string,
+	name string,
+	registry string,
+	street string,
+	number string,
+	district string,
+	reference string,
+) ([]domain.IMarket, error) {
+	result, err := s.Persistence.Find(
+		longitude,
+		latitude,
+		censusSector,
+		weightingArea,
+		township,
+		townshipCode,
+		subprefectureCode,
+		subprefecture,
+		region5,
+		region8,
+		name,
+		registry,
+		street,
+		number,
+		district,
+		reference,
+	)
 	if err != nil {
 		return nil, err
 	}

@@ -13,8 +13,8 @@ type IMarket interface {
 	GetWeightingArea() string
 	GetTownship() string
 	GetTownshipCode() string
-	GetSubPrefectureCode() string
-	GetSubPrefecture() string
+	GetSubprefectureCode() string
+	GetSubprefecture() string
 	GetRegion5() string
 	GetRegion8() string
 	GetName() string
@@ -29,7 +29,24 @@ type IMarketService interface {
 	Create(market IMarket) (string, error)
 	GetByID(id string) (IMarket, error)
 	GetAll() ([]IMarket, error)
-	Get(township string, region5 string, name string, district string) ([]IMarket, error)
+	Get(
+		longitude string,
+		latitude string,
+		censusSector string,
+		weightingArea string,
+		township string,
+		townshipCode string,
+		subprefectureCode string,
+		subprefecture string,
+		region5 string,
+		region8 string,
+		name string,
+		registry string,
+		street string,
+		number string,
+		district string,
+		reference string,
+	) ([]IMarket, error)
 	Update(id string, market IMarket) (IMarket, error)
 	DeleteByRegistry(registry string) error
 }
@@ -42,7 +59,24 @@ type IMarketPersistence interface {
 type IMarketReaderPersistence interface {
 	FindByID(id string) (IMarket, error)
 	FindAll() ([]IMarket, error)
-	Find(query map[string]string) ([]IMarket, error)
+	Find(
+		longitude string,
+		latitude string,
+		censusSector string,
+		weightingArea string,
+		township string,
+		townshipCode string,
+		subprefectureCode string,
+		subprefecture string,
+		region5 string,
+		region8 string,
+		name string,
+		registry string,
+		street string,
+		number string,
+		district string,
+		reference string,
+	) ([]IMarket, error)
 }
 
 type IMarketWriterPersistence interface {
@@ -53,22 +87,22 @@ type IMarketWriterPersistence interface {
 
 type Market struct {
 	ID                string
-	Longitude         string `valid:"required"`
-	Latitude          string `valid:"required"`
-	CensusSector      string `valid:"required"`
-	WeightingArea     string `valid:"required"`
-	Township          string `valid:"required"`
-	TownshipCode      string `valid:"required"`
-	SubPrefectureCode string `valid:"required"`
-	SubPrefecture     string `valid:"required"`
-	Region5           string `valid:"required"`
-	Region8           string `valid:"required"`
-	Name              string `valid:"required"`
-	Registry          string `valid:"required"`
-	Street            string `valid:"required"`
-	Number            string
-	District          string `valid:"required"`
-	Reference         string
+	Longitude         string `valid:"required,maxstringlength(10)"`
+	Latitude          string `valid:"required,maxstringlength(10)"`
+	CensusSector      string `valid:"required,maxstringlength(15)"`
+	WeightingArea     string `valid:"required,maxstringlength(13)"`
+	TownshipCode      string `valid:"required,maxstringlength(9)"`
+	Township          string `valid:"required,maxstringlength(18)"`
+	SubprefectureCode string `valid:"required,maxstringlength(2)"`
+	Subprefecture     string `valid:"required,maxstringlength(25)"`
+	Region5           string `valid:"required,maxstringlength(6)"`
+	Region8           string `valid:"required,maxstringlength(7)"`
+	Name              string `valid:"required,maxstringlength(30)"`
+	Registry          string `valid:"required,maxstringlength(6)"`
+	Street            string `valid:"required,maxstringlength(34)"`
+	Number            string `valid:"maxstringlength(15)"`
+	District          string `valid:"maxstringlength(20)"`
+	Reference         string `valid:"maxstringlength(30)"`
 }
 
 func (m *Market) IsValid() (bool, error) {
@@ -107,12 +141,12 @@ func (m *Market) GetTownshipCode() string {
 	return m.TownshipCode
 }
 
-func (m *Market) GetSubPrefectureCode() string {
-	return m.SubPrefectureCode
+func (m *Market) GetSubprefectureCode() string {
+	return m.SubprefectureCode
 }
 
-func (m *Market) GetSubPrefecture() string {
-	return m.SubPrefecture
+func (m *Market) GetSubprefecture() string {
+	return m.Subprefecture
 }
 
 func (m *Market) GetRegion5() string {

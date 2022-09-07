@@ -24,9 +24,9 @@ func TestMarketService_Create(t *testing.T) {
 	market.WeightingArea = "4444444444444"
 	market.TownshipCode = "555555555"
 	market.Township = "township"
-	market.SubPrefectureCode = "66"
-	market.SubPrefecture = "subPrefecture"
-	market.Region5 = "region5"
+	market.SubprefectureCode = "66"
+	market.Subprefecture = "subPrefecture"
+	market.Region5 = "region"
 	market.Region8 = "region8"
 	market.Name = "name"
 	market.Registry = "666666"
@@ -78,10 +78,13 @@ func TestMarketService_Get(t *testing.T) {
 	markets := append(make([]domain.IMarket, 0), marketMock)
 
 	persistenceMock := mock_domain.NewMockIMarketPersistence(ctrl)
-	persistenceMock.EXPECT().Find(gomock.Any()).Return(markets, nil).AnyTimes()
+	any := gomock.Any()
+	persistenceMock.EXPECT().Find(
+		any, any, any, any, any, any, any, any, any, any, any, any, any, any, any, any,
+	).Return(markets, nil).AnyTimes()
 	service := MarketService{Persistence: persistenceMock}
 
-	result, err := service.Get("township", "region5", "name", "district")
+	result, err := service.Get("", "", "", "", "", "", "", "", "", "", "", "registry", "", "", "", "")
 	require.Nil(t, err)
 	require.Equal(t, markets, result)
 }
@@ -102,9 +105,9 @@ func TestMarketService_Update(t *testing.T) {
 	market.WeightingArea = "4444444444444"
 	market.TownshipCode = "555555555"
 	market.Township = "township"
-	market.SubPrefectureCode = "66"
-	market.SubPrefecture = "subPrefecture"
-	market.Region5 = "region5"
+	market.SubprefectureCode = "66"
+	market.Subprefecture = "subPrefecture"
+	market.Region5 = "region"
 	market.Region8 = "region8"
 	market.Name = "name"
 	market.Registry = "666666"
