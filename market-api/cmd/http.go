@@ -40,7 +40,8 @@ var httpCmd = &cobra.Command{
 
 		server := web.NewServer()
 		server.Service = &marketService
-		server.InitWebServer(port)
+		err := server.InitWebServer(port)
+		utils.LoggerPanic("Web server error", err)
 	},
 }
 
