@@ -8,11 +8,15 @@
 [Swagger API](https://github.com/ferreira91/poc-api-with-go-lang/blob/master/market-api/api/openapi.yaml)
 
 ### How to execute 
-Run: ```$ make up```
+Run:  
+```$ make up```
 
 ### How to capture logs
-Run: ```$ make logs```  
+Run:  
+```$ make logs```  
 The output results in the *market.txt* file
 
 ### How to generate coverage code
-Run: ```$ make coverage```
+Run:  
+```$ cd market-api```  
+ ```$ ./coverage.sh html```
