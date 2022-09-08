@@ -14,7 +14,7 @@ func NewServer() *Server {
 	return &Server{}
 }
 
-func (s *Server) Start(port string) {
+func (s *Server) InitWebServer(port string) {
 	e := echo.New()
 
 	e.Validator = &CustomValidator{validator: validator.New()}

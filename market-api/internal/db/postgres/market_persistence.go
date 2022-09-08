@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"market-api/internal/core/domain"
+	"market-api/utils"
 	"strconv"
 )
 
@@ -16,7 +17,7 @@ func NewMarketDb(db *sql.DB) *MarketDb {
 }
 
 func (m *MarketDb) Save(market domain.IMarket) (string, error) {
-
+	utils.LoggerInfo("persistence - save market start")
 	stmt, err := m.db.Prepare(
 		`INSERT INTO market (
                 id,
@@ -40,11 +41,13 @@ func (m *MarketDb) Save(market domain.IMarket) (string, error) {
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`,
 	)
 	if err != nil {
+		utils.LoggerError("persistence - create market error generate query", err)
 		return "", err
 	}
 
 	id, err := m.getId()
 	if err != nil {
+		utils.LoggerError("persistence - create market error get id", err)
 		return "", err
 	}
 
@@ -69,6 +72,7 @@ func (m *MarketDb) Save(market domain.IMarket) (string, error) {
 	)
 
 	if err != nil {
+		utils.LoggerError("persistence - create market error execute query", err)
 		return "", err
 	}
 
@@ -80,6 +84,7 @@ func (m *MarketDb) Save(market domain.IMarket) (string, error) {
 }
 
 func (m *MarketDb) FindByID(id string) (domain.IMarket, error) {
+	utils.LoggerInfo("persistence - find market by id start")
 	stmt, err := m.db.Prepare(
 		`SELECT 
 			id,
@@ -103,6 +108,7 @@ func (m *MarketDb) FindByID(id string) (domain.IMarket, error) {
 		WHERE id=$1`,
 	)
 	if err != nil {
+		utils.LoggerError("persistence - find market by id error generate query", err)
 		return nil, err
 	}
 
@@ -127,12 +133,14 @@ func (m *MarketDb) FindByID(id string) (domain.IMarket, error) {
 		&entity.Reference,
 	)
 	if err != nil {
+		utils.LoggerError("persistence - find market by id error execute query", err)
 		return nil, err
 	}
 	return entity.ToMarketDomain(), nil
 }
 
 func (m *MarketDb) FindAll() ([]domain.IMarket, error) {
+	utils.LoggerInfo("persistence - find all markets start")
 	stmt, err := m.db.Prepare(
 		`SELECT 
 			id,
@@ -155,6 +163,7 @@ func (m *MarketDb) FindAll() ([]domain.IMarket, error) {
 		FROM market`,
 	)
 	if err != nil {
+		utils.LoggerError("persistence - find all market error generate query", err)
 		return nil, err
 	}
 
@@ -167,7 +176,7 @@ func (m *MarketDb) FindAll() ([]domain.IMarket, error) {
 	var markets []domain.IMarket
 	for rows.Next() {
 		var entity MarketEntity
-		if err := rows.Scan(
+		if err = rows.Scan(
 			&entity.ID,
 			&entity.Longitude,
 			&entity.Latitude,
@@ -186,6 +195,7 @@ func (m *MarketDb) FindAll() ([]domain.IMarket, error) {
 			&entity.District,
 			&entity.Reference,
 		); err != nil {
+			utils.LoggerError("persistence - find all markets error execute query", err)
 			return nil, err
 		}
 		markets = append(markets, entity.ToMarketDomain())
@@ -212,6 +222,7 @@ func (m *MarketDb) Find(
 	district string,
 	reference string,
 ) ([]domain.IMarket, error) {
+	utils.LoggerInfo("persistence - find markets start")
 	stmt, err := m.db.Prepare(
 		fmt.Sprintf(
 			`SELECT 
@@ -253,6 +264,7 @@ func (m *MarketDb) Find(
 		),
 	)
 	if err != nil {
+		utils.LoggerError("persistence - find market error generate query", err)
 		return nil, err
 	}
 
@@ -265,7 +277,7 @@ func (m *MarketDb) Find(
 	markets := []domain.IMarket{}
 	for rows.Next() {
 		var entity MarketEntity
-		if err := rows.Scan(
+		if err = rows.Scan(
 			&entity.ID,
 			&entity.Longitude,
 			&entity.Latitude,
@@ -284,6 +296,7 @@ func (m *MarketDb) Find(
 			&entity.District,
 			&entity.Reference,
 		); err != nil {
+			utils.LoggerError("persistence - find markets error execute query", err)
 			return nil, err
 		}
 		markets = append(markets, entity.ToMarketDomain())
@@ -293,6 +306,7 @@ func (m *MarketDb) Find(
 }
 
 func (m *MarketDb) Update(id string, market domain.IMarket) (domain.IMarket, error) {
+	utils.LoggerInfo("persistence - update market start")
 	stmt, err := m.db.Prepare(
 		`UPDATE market SET 
 			longitude = $3,
@@ -313,6 +327,7 @@ func (m *MarketDb) Update(id string, market domain.IMarket) (domain.IMarket, err
 		WHERE id = $1 AND registry = $2 RETURNING id,longitude,latitude,census_sector,weighting_area,township_code,township,subprefecture_code,subprefecture,region_5,region_8,name,registry,street,number,district,reference`,
 	)
 	if err != nil {
+		utils.LoggerError("persistence - update market error generate query", err)
 		return nil, err
 	}
 
@@ -356,6 +371,7 @@ func (m *MarketDb) Update(id string, market domain.IMarket) (domain.IMarket, err
 		&marketUpdated.Reference,
 	)
 	if err != nil {
+		utils.LoggerError("persistence - update market error execute query", err)
 		return nil, err
 	}
 
@@ -363,9 +379,11 @@ func (m *MarketDb) Update(id string, market domain.IMarket) (domain.IMarket, err
 }
 
 func (m *MarketDb) DeleteByRegistry(registry string) error {
+	utils.LoggerInfo("persistence - delete market by registry start")
 	var id *string
 	stmt, err := m.db.Prepare(`SELECT id FROM market WHERE registry=$1`)
 	if err != nil {
+		utils.LoggerError("persistence - delete market by registry error generate query", err)
 		return err
 	}
 
@@ -379,6 +397,7 @@ func (m *MarketDb) DeleteByRegistry(registry string) error {
 	}
 	_, err = stmt.Exec(id)
 	if err != nil {
+		utils.LoggerError("persistence - delete market by registry error execute query", err)
 		return err
 	}
 	return nil

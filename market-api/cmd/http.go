@@ -11,23 +11,26 @@ import (
 	"market-api/internal/core/service"
 	"market-api/internal/db/postgres"
 	postgres2 "market-api/test/postgres"
+	"market-api/utils"
 )
 
 // httpCmd represents the http command
 var httpCmd = &cobra.Command{
 	Use:   "http",
 	Short: "API Market",
-	Long: "API Market ",
+	Long:  "API Market",
 	Run: func(cmd *cobra.Command, args []string) {
+		utils.InitLogger()
+
 		var database *sql.DB
 		if environment == "LOCAL" {
 			_, db, _ := postgres2.SetUp()
 			database = db
 		} else {
-			p := postgres.Init()
-			db, err := p.Start()
+			p := postgres.LoadConfig()
+			db, err := p.InitDb()
 			if err != nil {
-				panic(err.Error())
+				utils.LoggerPanic("Connection database error", err)
 			}
 			database = db
 		}
@@ -37,7 +40,7 @@ var httpCmd = &cobra.Command{
 
 		server := web.NewServer()
 		server.Service = &marketService
-		server.Start(port)
+		server.InitWebServer(port)
 	},
 }
 

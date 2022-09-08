@@ -11,21 +11,23 @@ import (
 )
 
 func SetUp() (*gnomock.Container, *sql.DB, error) {
-	const user = "test"
-	const pass = "test"
-	const dbName = "test"
+	const (
+		user   = "test"
+		pass   = "test"
+		dbName = "test"
+	)
 
 	_, path, _, ok := runtime.Caller(0)
 	if !ok {
 		log.Fatalf("failed to get path")
 	}
 
-	filepath := filepath.Dir(path) + "/init.sql"
+	filePath := filepath.Dir(path) + "/init.sql"
 
 	p := postgres.Preset(
 		postgres.WithUser(user, pass),
 		postgres.WithDatabase(dbName),
-		postgres.WithQueriesFile(filepath),
+		postgres.WithQueriesFile(filePath),
 	)
 
 	container, err := gnomock.Start(p)

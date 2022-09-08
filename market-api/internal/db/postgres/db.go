@@ -5,7 +5,7 @@ import (
 	"fmt"
 	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
-	"log"
+	"market-api/utils"
 )
 
 type Config struct {
@@ -18,7 +18,7 @@ type Config struct {
 	SslMode    string
 }
 
-func Init() Config {
+func LoadConfig() Config {
 	return Config{
 		DriverName: viper.GetString("DB_DRIVER_NAME"),
 		Host:       viper.GetString("DB_HOST"),
@@ -30,7 +30,7 @@ func Init() Config {
 	}
 }
 
-func (c *Config) Start() (*sql.DB, error) {
+func (c *Config) InitDb() (*sql.DB, error) {
 	dataSourceName := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		c.Host, c.Port, c.User, c.Password, c.DbName)
 	db, err := sql.Open("postgres", dataSourceName)
@@ -43,6 +43,6 @@ func (c *Config) Start() (*sql.DB, error) {
 		return nil, err
 	}
 
-	log.Println("Database connection established")
+	utils.LoggerInfo("Database connection established")
 	return db, nil
 }

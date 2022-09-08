@@ -1,14 +1,19 @@
 package service
 
-import "market-api/internal/core/domain"
+import (
+	"market-api/internal/core/domain"
+	"market-api/utils"
+)
 
 type MarketService struct {
 	Persistence domain.IMarketPersistence
 }
 
 func (s *MarketService) Create(market domain.IMarket) (string, error) {
+	utils.LoggerInfo("service - create start")
 	_, err := market.IsValid()
 	if err != nil {
+		utils.LoggerError("service - market validate error", err)
 		return "", err
 	}
 	result, err := s.Persistence.Save(market)
@@ -19,6 +24,7 @@ func (s *MarketService) Create(market domain.IMarket) (string, error) {
 }
 
 func (s *MarketService) GetByID(id string) (domain.IMarket, error) {
+	utils.LoggerInfo("service - get by id start")
 	result, err := s.Persistence.FindByID(id)
 	if err != nil {
 		return nil, err
@@ -27,6 +33,7 @@ func (s *MarketService) GetByID(id string) (domain.IMarket, error) {
 }
 
 func (s *MarketService) GetAll() ([]domain.IMarket, error) {
+	utils.LoggerInfo("service - get all start")
 	result, err := s.Persistence.FindAll()
 	if err != nil {
 		return nil, err
@@ -52,6 +59,7 @@ func (s *MarketService) Get(
 	district string,
 	reference string,
 ) ([]domain.IMarket, error) {
+	utils.LoggerInfo("service - get start")
 	result, err := s.Persistence.Find(
 		longitude,
 		latitude,
@@ -77,8 +85,10 @@ func (s *MarketService) Get(
 }
 
 func (s *MarketService) Update(id string, market domain.IMarket) (domain.IMarket, error) {
+	utils.LoggerInfo("service - update start")
 	_, err := market.IsValid()
 	if err != nil {
+		utils.LoggerError("service - market validate error", err)
 		return &domain.Market{}, err
 	}
 	result, err := s.Persistence.Update(id, market)
@@ -89,6 +99,7 @@ func (s *MarketService) Update(id string, market domain.IMarket) (domain.IMarket
 }
 
 func (s *MarketService) DeleteByRegistry(registry string) error {
+	utils.LoggerInfo("service - delete by registry start")
 	err := s.Persistence.DeleteByRegistry(registry)
 	if err != nil {
 		return err

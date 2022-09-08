@@ -49,22 +49,52 @@ func TestCreateMarket(t *testing.T) {
 	e.Validator = &CustomValidator{validator: validator.New()}
 	s := &Server{serviceMock}
 
-	// success scenario
 	if assert.NoError(t, CreateMarket(s, c)) {
 		headers := rec.Header()
 		assert.Equal(t, http.StatusCreated, rec.Code)
 		assert.Equal(t, echo.MIMEApplicationJSONCharsetUTF8, headers.Get("Content-Type"))
-		assert.Equal(t, "example.com//market/1", headers.Get("Location"))
+		assert.Equal(t, "example.com/market/1", headers.Get("Location"))
 	}
+
+	var marketJsonBadRequest = `{
+		"longitude": "-11111111",
+		"latitude": "-22222222",
+		"censusSector": "333333333333333",
+		"weightingArea": "4444444444444",
+		"townshipCode": "555555555",
+		"Township": "township",
+		"subPrefectureCode": "66",
+		"subPrefecture": "subPrefecture",
+		"region5": "region",
+		"region8": "region8",
+		"name": "name",
+		"registry": "",
+		"street": "street",
+		"number": "777777777777777",
+		"district": "district",
+		"reference": "reference"
+	}`
+
+	e = echo.New()
+	req = httptest.NewRequest(http.MethodPost, "/market", strings.NewReader(marketJsonBadRequest))
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
+	rec = httptest.NewRecorder()
+	c = e.NewContext(req, rec)
+	e.Validator = &CustomValidator{validator: validator.New()}
+	assert.EqualError(t, CreateMarket(s, c), "code=400, message={invalid_request Invalid request}")
 
 	serviceMockError := mock_domain.NewMockIMarketService(ctrl)
 	serviceMockError.EXPECT().Create(gomock.Any()).Return("", errors.New("Error ")).AnyTimes()
+
+	e = echo.New()
+	req = httptest.NewRequest(http.MethodPost, "/market", strings.NewReader(marketJson))
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
+	rec = httptest.NewRecorder()
+	c = e.NewContext(req, rec)
+	e.Validator = &CustomValidator{validator: validator.New()}
 	s = &Server{serviceMockError}
 
-	// error scenario
-	if assert.Error(t, CreateMarket(s, c)) {
-		assert.Error(t, echo.NewHTTPError(http.StatusInternalServerError), "Error ")
-	}
+	assert.EqualError(t, CreateMarket(s, c), "code=500, message={server_error Oops! Something went wrong...}")
 }
 
 func TestGetMarketByID(t *testing.T) {
@@ -122,7 +152,6 @@ func TestGetMarketByID(t *testing.T) {
 		"reference": "reference"
 	}`
 
-	// success scenario
 	if assert.NoError(t, GetMarketByID(s, c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, echo.MIMEApplicationJSONCharsetUTF8, rec.Header().Get("Content-Type"))
@@ -135,10 +164,16 @@ func TestGetMarketByID(t *testing.T) {
 	serviceMockError := mock_domain.NewMockIMarketService(ctrl)
 	serviceMockError.EXPECT().GetByID(gomock.Any()).Return(nil, errors.New("Error ")).AnyTimes()
 
-	// error scenario
-	if assert.Error(t, CreateMarket(s, c)) {
-		assert.Error(t, echo.NewHTTPError(http.StatusNotFound), "Error ")
-	}
+	e = echo.New()
+	req = httptest.NewRequest(http.MethodGet, "/market", nil)
+	rec = httptest.NewRecorder()
+	c = e.NewContext(req, rec)
+	c.SetPath("/:id")
+	c.SetParamNames("id")
+	c.SetParamValues("1")
+	s = &Server{serviceMockError}
+
+	assert.EqualError(t, GetMarketByID(s, c), "code=404, message={not_found Market not found}")
 }
 
 func TestGetMarkets(t *testing.T) {
@@ -196,7 +231,6 @@ func TestGetMarkets(t *testing.T) {
 		"reference": "reference"
 	}]`
 
-	// success scenario
 	if assert.NoError(t, GetMarkets(s, c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, echo.MIMEApplicationJSONCharsetUTF8, rec.Header().Get("Content-Type"))
@@ -209,10 +243,13 @@ func TestGetMarkets(t *testing.T) {
 	serviceMockError := mock_domain.NewMockIMarketService(ctrl)
 	serviceMockError.EXPECT().GetAll().Return(nil, errors.New("Error ")).AnyTimes()
 
-	// error scenario
-	if assert.Error(t, CreateMarket(s, c)) {
-		assert.Error(t, echo.NewHTTPError(http.StatusInternalServerError), "Error ")
-	}
+	e = echo.New()
+	req = httptest.NewRequest(http.MethodGet, "/market", nil)
+	rec = httptest.NewRecorder()
+	c = e.NewContext(req, rec)
+	s = &Server{serviceMockError}
+
+	assert.EqualError(t, GetMarkets(s, c), "code=500, message={server_error Oops! Something went wrong...}")
 
 	a := gomock.Any()
 	serviceMock.EXPECT().Get(a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a).Return(markets, nil).AnyTimes()
@@ -227,7 +264,6 @@ func TestGetMarkets(t *testing.T) {
 	c = e.NewContext(req, rec)
 	s = &Server{serviceMock}
 
-	// success scenario
 	if assert.NoError(t, GetMarkets(s, c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, echo.MIMEApplicationJSONCharsetUTF8, rec.Header().Get("Content-Type"))
@@ -240,10 +276,12 @@ func TestGetMarkets(t *testing.T) {
 	serviceMockError = mock_domain.NewMockIMarketService(ctrl)
 	serviceMockError.EXPECT().Get(a, a, a, a, a, a, a, a, a, a, a, a, a, a, a, a).Return(nil, errors.New("Error ")).AnyTimes()
 
-	// error scenario
-	if assert.Error(t, CreateMarket(s, c)) {
-		assert.Error(t, echo.NewHTTPError(http.StatusInternalServerError), "Error ")
-	}
+	req = httptest.NewRequest(http.MethodGet, "/market?"+q.Encode(), nil)
+	rec = httptest.NewRecorder()
+	c = e.NewContext(req, rec)
+	s = &Server{serviceMockError}
+
+	assert.EqualError(t, GetMarkets(s, c), "code=500, message={server_error Oops! Something went wrong...}")
 }
 
 func TestUpdateMarket(t *testing.T) {
@@ -304,7 +342,6 @@ func TestUpdateMarket(t *testing.T) {
 	e.Validator = &CustomValidator{validator: validator.New()}
 	s := &Server{serviceMock}
 
-	// success scenario
 	if assert.NoError(t, UpdateMarket(s, c)) {
 		headers := rec.Header()
 		assert.Equal(t, http.StatusOK, rec.Code)
@@ -318,10 +355,18 @@ func TestUpdateMarket(t *testing.T) {
 	serviceMockError := mock_domain.NewMockIMarketService(ctrl)
 	serviceMockError.EXPECT().Update(a, a).Return(nil, errors.New("Error ")).AnyTimes()
 
-	// error scenario
-	if assert.Error(t, CreateMarket(s, c)) {
-		assert.Error(t, echo.NewHTTPError(http.StatusNotFound), "Error ")
-	}
+	e = echo.New()
+	req = httptest.NewRequest(http.MethodPost, "/market", strings.NewReader(marketJson))
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSONCharsetUTF8)
+	rec = httptest.NewRecorder()
+	c = e.NewContext(req, rec)
+	c.SetPath("/:id")
+	c.SetParamNames("id")
+	c.SetParamValues("1")
+	e.Validator = &CustomValidator{validator: validator.New()}
+	s = &Server{serviceMockError}
+
+	assert.EqualError(t, UpdateMarket(s, c), "code=404, message={not_found Market not found}")
 }
 
 func TestDeleteMarket(t *testing.T) {
@@ -339,7 +384,6 @@ func TestDeleteMarket(t *testing.T) {
 	c := e.NewContext(req, rec)
 	s := &Server{serviceMock}
 
-	// success scenario
 	if assert.NoError(t, DeleteMarket(s, c)) {
 		assert.Equal(t, http.StatusNoContent, rec.Code)
 		assert.Equal(t, echo.MIMEApplicationJSONCharsetUTF8, rec.Header().Get("Content-Type"))
@@ -348,10 +392,15 @@ func TestDeleteMarket(t *testing.T) {
 	serviceMockError := mock_domain.NewMockIMarketService(ctrl)
 	serviceMockError.EXPECT().DeleteByRegistry(gomock.Any()).Return(errors.New("Error ")).AnyTimes()
 
-	// success error
-	if assert.Error(t, CreateMarket(s, c)) {
-		assert.Error(t, echo.NewHTTPError(http.StatusNotFound), "Error ")
-	}
+	e = echo.New()
+	q = make(url.Values)
+	q.Set("registry", "test")
+	req = httptest.NewRequest(http.MethodGet, "/market?"+q.Encode(), nil)
+	rec = httptest.NewRecorder()
+	c = e.NewContext(req, rec)
+	s = &Server{serviceMockError}
+
+	assert.EqualError(t, DeleteMarket(s, c), "code=404, message={not_found Market not found}")
 }
 
 func removeSpacesAndBreakLineAndHorizontalTab(data string) string {
