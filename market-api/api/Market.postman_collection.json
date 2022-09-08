@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fc930f5a-40b0-4411-8f35-bb567632e107",
+		"_postman_id": "bf45f277-1605-4d33-b8cf-91bbd55e791a",
 		"name": "market",
 		"description": "Market API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"longitude\": \"-11111111\",\n    \"latitude\": \"-22222222\",\n    \"census_sector\": \"333333333333333\",\n    \"weighting_area\": \"4444444444444\",\n    \"township_code\": \"555555555\",\n    \"Township\": \"township\",\n    \"subprefecture_code\": \"66\",\n    \"subprefecture\": \"subprefecture\",\n    \"region_5\": \"region\",\n    \"region_8\": \"region_8\",\n    \"name\": \"name\",\n    \"registry\": \"666669\",\n    \"street\": \"street\",\n    \"number\": \"777777777777777\",\n    \"district\": \"district\",\n    \"reference\": \"reference\"\n}",
+					"raw": "{\n    \"longitude\": \"-11111111\",\n    \"latitude\": \"-22222222\",\n    \"census_sector\": \"333333333333333\",\n    \"weighting_area\": \"4444444444444\",\n    \"township_code\": \"555555555\",\n    \"township\": \"township\",\n    \"subprefecture_code\": \"66\",\n    \"subprefecture\": \"subprefecture\",\n    \"region_5\": \"region\",\n    \"region_8\": \"region8\",\n    \"name\": \"name\",\n    \"registry\": \"666669\",\n    \"street\": \"street\",\n    \"number\": \"777777777777777\",\n    \"district\": \"district\",\n    \"reference\": \"reference\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -113,7 +113,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"longitude\": \"-11111111\",\n    \"latitude\": \"-22222222\",\n    \"census_sector\": \"333333333333333\",\n    \"weighting_area\": \"4444444444444\",\n    \"township_code\": \"555555555\",\n    \"Township\": \"township\",\n    \"subprefecture_code\": \"66\",\n    \"subprefecture\": \"subprefecture\",\n    \"region_5\": \"region\",\n    \"region_8\": \"region_8\",\n    \"name\": \"name\",\n    \"registry\": \"123456\",\n    \"street\": \"street\",\n    \"number\": \"777777777777777\",\n    \"district\": \"district\",\n    \"reference\": \"reference\"\n}",
+					"raw": "{\n    \"longitude\": \"-11111111\",\n    \"latitude\": \"-22222222\",\n    \"census_sector\": \"333333333333333\",\n    \"weighting_area\": \"4444444444444\",\n    \"township_code\": \"555555555\",\n    \"Township\": \"township\",\n    \"subprefecture_code\": \"66\",\n    \"subprefecture\": \"subprefecture\",\n    \"region_5\": \"region\",\n    \"region_8\": \"region8\",\n    \"name\": \"name\",\n    \"registry\": \"666669\",\n    \"street\": \"street\",\n    \"number\": \"777777777777777\",\n    \"district\": \"district\",\n    \"reference\": \"reference\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -121,12 +121,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{market_local}}/1",
+					"raw": "{{market_local}}/881",
 					"host": [
 						"{{market_local}}"
 					],
 					"path": [
-						"1"
+						"881"
 					]
 				}
 			},
@@ -147,14 +147,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{market_local}}?registry=10",
+					"raw": "{{market_local}}?registry=666669",
 					"host": [
 						"{{market_local}}"
 					],
 					"query": [
 						{
 							"key": "registry",
-							"value": "10"
+							"value": "666669"
 						}
 					]
 				}

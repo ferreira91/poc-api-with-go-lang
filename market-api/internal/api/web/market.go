@@ -11,14 +11,14 @@ type (
 	MarketRequestDTO struct {
 		Longitude         string `json:"longitude" validate:"required,max=10"`
 		Latitude          string `json:"latitude" validate:"required,max=10"`
-		CensusSector      string `json:"censusSector" validate:"required,max=15"`
-		WeightingArea     string `json:"weightingArea" validate:"required,max=13"`
-		TownshipCode      string `json:"townshipCode" validate:"required,max=9"`
+		CensusSector      string `json:"census_sector" validate:"required,max=15"`
+		WeightingArea     string `json:"weighting_area" validate:"required,max=13"`
+		TownshipCode      string `json:"township_code" validate:"required,max=9"`
 		Township          string `json:"township" validate:"required,max=18"`
-		SubPrefectureCode string `json:"subPrefectureCode" validate:"required,max=2"`
-		SubPrefecture     string `json:"subPrefecture" validate:"required,max=25"`
-		Region5           string `json:"region5" validate:"required,max=6"`
-		Region8           string `json:"region8" validate:"required,max=7"`
+		SubprefectureCode string `json:"subprefecture_code" validate:"required,max=2"`
+		Subprefecture     string `json:"subprefecture" validate:"required,max=25"`
+		Region5           string `json:"region_5" validate:"required,max=6"`
+		Region8           string `json:"region_8" validate:"required,max=7"`
 		Name              string `json:"name" validate:"required,max=30"`
 		Registry          string `json:"registry" validate:"required,max=6"`
 		Street            string `json:"street" validate:"required,max=34"`
@@ -31,14 +31,14 @@ type (
 		ID                string `json:"id"`
 		Longitude         string `json:"longitude"`
 		Latitude          string `json:"latitude"`
-		CensusSector      string `json:"censusSector"`
-		WeightingArea     string `json:"weightingArea"`
-		TownshipCode      string `json:"townshipCode"`
+		CensusSector      string `json:"census_sector"`
+		WeightingArea     string `json:"weighting_area"`
+		TownshipCode      string `json:"township_code"`
 		Township          string `json:"township"`
-		SubPrefectureCode string `json:"subPrefectureCode"`
-		SubPrefecture     string `json:"subPrefecture"`
-		Region5           string `json:"region5"`
-		Region8           string `json:"region8"`
+		SubprefectureCode string `json:"subprefecture_code"`
+		Subprefecture     string `json:"subprefecture"`
+		Region5           string `json:"region_5"`
+		Region8           string `json:"region_8"`
 		Name              string `json:"name"`
 		Registry          string `json:"registry"`
 		Street            string `json:"street"`
@@ -49,7 +49,7 @@ type (
 
 	MarketGetParam struct {
 		Township string `query:"township"`
-		Region5  string `query:"region5"`
+		Region5  string `query:"region_5"`
 		Name     string `query:"name"`
 		District string `query:"district"`
 	}
@@ -78,8 +78,8 @@ func (m MarketRequestDTO) ToMarketDomain() *domain.Market {
 	market.WeightingArea = m.WeightingArea
 	market.TownshipCode = m.TownshipCode
 	market.Township = m.Township
-	market.SubprefectureCode = m.SubPrefectureCode
-	market.Subprefecture = m.SubPrefecture
+	market.SubprefectureCode = m.SubprefectureCode
+	market.Subprefecture = m.Subprefecture
 	market.Region5 = m.Region5
 	market.Region8 = m.Region8
 	market.Name = m.Name
@@ -101,8 +101,8 @@ func ToMarketDTO(market domain.IMarket) MarketResponseDTO {
 		WeightingArea:     market.GetWeightingArea(),
 		TownshipCode:      market.GetTownshipCode(),
 		Township:          market.GetTownship(),
-		SubPrefectureCode: market.GetSubprefectureCode(),
-		SubPrefecture:     market.GetSubprefecture(),
+		SubprefectureCode: market.GetSubprefectureCode(),
+		Subprefecture:     market.GetSubprefecture(),
 		Region5:           market.GetRegion5(),
 		Region8:           market.GetRegion8(),
 		Name:              market.GetName(),
@@ -126,8 +126,8 @@ func ToMarketsDTO(markets []domain.IMarket) []MarketResponseDTO {
 			WeightingArea:     market.GetWeightingArea(),
 			TownshipCode:      market.GetTownshipCode(),
 			Township:          market.GetTownship(),
-			SubPrefectureCode: market.GetSubprefectureCode(),
-			SubPrefecture:     market.GetSubprefecture(),
+			SubprefectureCode: market.GetSubprefectureCode(),
+			Subprefecture:     market.GetSubprefecture(),
 			Region5:           market.GetRegion5(),
 			Region8:           market.GetRegion8(),
 			Name:              market.GetName(),

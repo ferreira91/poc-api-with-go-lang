@@ -25,14 +25,14 @@ func TestCreateMarket(t *testing.T) {
 	var marketJson = `{
 		"longitude": "-11111111",
 		"latitude": "-22222222",
-		"censusSector": "333333333333333",
-		"weightingArea": "4444444444444",
-		"townshipCode": "555555555",
-		"Township": "township",
-		"subPrefectureCode": "66",
-		"subPrefecture": "subPrefecture",
-		"region5": "region",
-		"region8": "region8",
+		"census_sector": "333333333333333",
+		"weighting_area": "4444444444444",
+		"township_code": "555555555",
+		"township": "township",
+		"subprefecture_code": "66",
+		"subprefecture": "subprefecture",
+		"region_5": "region",
+		"region_8": "region8",
 		"name": "name",
 		"registry": "666669",
 		"street": "street",
@@ -59,14 +59,14 @@ func TestCreateMarket(t *testing.T) {
 	var marketJsonBadRequest = `{
 		"longitude": "-11111111",
 		"latitude": "-22222222",
-		"censusSector": "333333333333333",
-		"weightingArea": "4444444444444",
-		"townshipCode": "555555555",
-		"Township": "township",
-		"subPrefectureCode": "66",
-		"subPrefecture": "subPrefecture",
-		"region5": "region",
-		"region8": "region8",
+		"census_sector": "333333333333333",
+		"weighting_area": "4444444444444",
+		"township_code": "555555555",
+		"township": "township",
+		"subprefecture_code": "66",
+		"subprefecture": "subprefecture",
+		"region_5": "region",
+		"region_8": "region8",
 		"name": "name",
 		"registry": "",
 		"street": "street",
@@ -110,8 +110,8 @@ func TestGetMarketByID(t *testing.T) {
 	market.TownshipCode = "555555555"
 	market.Township = "township"
 	market.SubprefectureCode = "66"
-	market.Subprefecture = "subPrefecture"
-	market.Region5 = "region5"
+	market.Subprefecture = "subprefecture"
+	market.Region5 = "region_5"
 	market.Region8 = "region8"
 	market.Name = "name"
 	market.Registry = "666666"
@@ -136,14 +136,14 @@ func TestGetMarketByID(t *testing.T) {
     	"id": "1",
 		"longitude": "-11111111",
 		"latitude": "-22222222",
-		"censusSector": "333333333333333",
-		"weightingArea": "4444444444444",
-		"townshipCode": "555555555",
+		"census_sector": "333333333333333",
+		"weighting_area": "4444444444444",
+		"township_code": "555555555",
 		"township": "township",
-		"subPrefectureCode": "66",
-		"subPrefecture": "subPrefecture",
-		"region5": "region5",
-		"region8": "region8",
+		"subprefecture_code": "66",
+		"subprefecture": "subprefecture",
+		"region_5": "region_5",
+		"region_8": "region8",
 		"name": "name",
 		"registry": "666666",
 		"street": "street",
@@ -189,9 +189,9 @@ func TestGetMarkets(t *testing.T) {
 	market.TownshipCode = "555555555"
 	market.Township = "township"
 	market.SubprefectureCode = "66"
-	market.Subprefecture = "subPrefecture"
-	market.Region5 = "region5"
-	market.Region8 = "region8"
+	market.Subprefecture = "subprefecture"
+	market.Region5 = "region_5"
+	market.Region8 = "region_8"
 	market.Name = "name"
 	market.Registry = "666666"
 	market.Street = "street"
@@ -215,14 +215,14 @@ func TestGetMarkets(t *testing.T) {
     	"id": "1",
 		"longitude": "-11111111",
 		"latitude": "-22222222",
-		"censusSector": "333333333333333",
-		"weightingArea": "4444444444444",
-		"townshipCode": "555555555",
+		"census_sector": "333333333333333",
+		"weighting_area": "4444444444444",
+		"township_code": "555555555",
 		"township": "township",
-		"subPrefectureCode": "66",
-		"subPrefecture": "subPrefecture",
-		"region5": "region5",
-		"region8": "region8",
+		"subprefecture_code": "66",
+		"subprefecture": "subprefecture",
+		"region_5": "region_5",
+		"region_8": "region_8",
 		"name": "name",
 		"registry": "666666",
 		"street": "street",
@@ -256,7 +256,7 @@ func TestGetMarkets(t *testing.T) {
 
 	q := make(url.Values)
 	q.Add("township", "test")
-	q.Add("region5", "test")
+	q.Add("region_5", "test")
 	q.Add("name", "test")
 	q.Add("district", "test")
 	req = httptest.NewRequest(http.MethodGet, "/market?"+q.Encode(), nil)
@@ -297,7 +297,7 @@ func TestUpdateMarket(t *testing.T) {
 	market.TownshipCode = "555555555"
 	market.Township = "township"
 	market.SubprefectureCode = "66"
-	market.Subprefecture = "subPrefecture"
+	market.Subprefecture = "subprefecture"
 	market.Region5 = "region"
 	market.Region8 = "region8"
 	market.Name = "name"
@@ -315,14 +315,14 @@ func TestUpdateMarket(t *testing.T) {
 		"id": "1",
 		"longitude": "-11111111",
 		"latitude": "-22222222",
-		"censusSector": "333333333333333",
-		"weightingArea": "4444444444444",
-		"townshipCode": "555555555",
+		"census_sector": "333333333333333",
+		"weighting_area": "4444444444444",
+		"township_code": "555555555",
 		"township": "township",
-		"subPrefectureCode": "66",
-		"subPrefecture": "subPrefecture",
-		"region5": "region",
-		"region8": "region8",
+		"subprefecture_code": "66",
+		"subprefecture": "subprefecture",
+		"region_5": "region",
+		"region_8": "region8",
 		"name": "name",
 		"registry": "666666",
 		"street": "street",
