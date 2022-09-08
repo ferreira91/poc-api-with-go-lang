@@ -2,10 +2,7 @@
 
 # Code coverage generation
 COVERAGE_DIR="${COVERAGE_DIR:-coverage}"
-dir=$(pwd)
-PKG_LIST=$(go list ./market-api/internal... | grep -v /vendor/)
-echo "${PKG_LIST}"
-
+PKG_LIST=$(go list ./internal... | grep -v /vendor/)
 
 # Create the coverage files directory
 mkdir -p "$COVERAGE_DIR"
